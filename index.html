@@ -10,22 +10,22 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <!-- Marked.js for Markdown parsing -->
+  <!-- Marked.js -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <style>
-    /* ========== CSS Custom Properties ========== */
+    /* ========== CSS Custom Properties (Light) ========== */
     :root {
-      --bg: #0a0a0a;
-      --surface: #141414;
-      --surface-raised: #1c1c1c;
-      --border: #2a2a2a;
-      --accent: #e8b931;
-      --accent-dim: #c49a1a;
-      --accent-glow: rgba(232, 185, 49, 0.08);
-      --text-primary: #e8e4dc;
-      --text-secondary: #9a958e;
-      --text-muted: #5a5652;
+      --bg: #ffffff;
+      --surface: #f7f7f5;
+      --surface-raised: #efeeeb;
+      --border: #e2e0dc;
+      --accent: #b8860b;
+      --accent-dim: #9a7209;
+      --accent-glow: rgba(184, 134, 11, 0.06);
+      --text-primary: #1a1a1a;
+      --text-secondary: #4a4744;
+      --text-muted: #9a9793;
       --sidebar-w: 280px;
       --header-h: 56px;
       --radius: 6px;
@@ -54,13 +54,13 @@
       height: 100vh;
     }
 
-    /* ========== Grain Overlay ========== */
+    /* ========== Subtle Grain ========== */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-      opacity: 0.03;
+      opacity: 0.018;
       pointer-events: none;
       z-index: 9999;
     }
@@ -128,7 +128,7 @@
       font-family: var(--font-mono);
       font-size: 0.8rem;
       outline: none;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     .sidebar-search input::placeholder {
@@ -137,6 +137,7 @@
 
     .sidebar-search input:focus {
       border-color: var(--accent-dim);
+      box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.08);
     }
 
     .sidebar-nav {
@@ -145,7 +146,6 @@
       padding: 8px 0 20px;
     }
 
-    /* Sidebar sections */
     .nav-section {
       margin-bottom: 4px;
     }
@@ -256,7 +256,7 @@
       justify-content: space-between;
       padding: 0 32px;
       border-bottom: 1px solid var(--border);
-      background: var(--surface);
+      background: var(--bg);
       flex-shrink: 0;
     }
 
@@ -370,7 +370,7 @@
       border-radius: 3px;
       font-family: var(--font-mono);
       font-size: 0.85em;
-      color: var(--accent);
+      color: var(--accent-dim);
     }
 
     .content-area pre {
@@ -431,7 +431,7 @@
       align-items: center;
       gap: 12px;
       padding: 14px 16px;
-      background: var(--surface);
+      background: var(--bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       text-decoration: none;
@@ -444,14 +444,14 @@
       border-color: var(--accent-dim);
       background: var(--accent-glow);
       transform: translateY(-2px);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
     }
 
     .link-card .card-icon {
       width: 36px;
       height: 36px;
       border-radius: 8px;
-      background: var(--surface-raised);
+      background: var(--surface);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -496,7 +496,7 @@
     .empty-state .empty-icon {
       font-size: 3rem;
       margin-bottom: 16px;
-      opacity: 0.3;
+      opacity: 0.25;
     }
 
     .empty-state p {
@@ -506,8 +506,8 @@
     /* ========== Loading ========== */
     .loading-spinner {
       display: inline-block;
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       border: 2px solid var(--border);
       border-top-color: var(--accent);
       border-radius: 50%;
@@ -535,8 +535,9 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.25);
       z-index: 5;
+      backdrop-filter: blur(2px);
     }
 
     .overlay.active {
@@ -550,7 +551,7 @@
         left: 0;
         top: 0;
         transform: translateX(-100%);
-        box-shadow: 4px 0 30px rgba(0, 0, 0, 0.4);
+        box-shadow: 4px 0 30px rgba(0, 0, 0, 0.12);
       }
 
       .sidebar.open {
@@ -570,7 +571,7 @@
       }
     }
 
-    /* ========== Stagger animation for cards ========== */
+    /* ========== Card stagger animation ========== */
     .link-card {
       opacity: 0;
       animation: cardIn 0.35s ease forwards;
@@ -593,6 +594,26 @@
       from { opacity: 0; transform: translateY(10px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+
+    /* ========== Visit button (light) ========== */
+    .visit-btn {
+      display: inline-block;
+      padding: 10px 24px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: var(--radius);
+      font-weight: 500;
+      font-size: 0.85rem;
+      text-decoration: none;
+      border-bottom: none;
+      margin: 12px 0 28px;
+      transition: all 0.2s;
+    }
+
+    .visit-btn:hover {
+      background: var(--accent-dim);
+      border-bottom: none;
+    }
   </style>
 </head>
 
@@ -608,15 +629,15 @@
       </div>
       <nav class="sidebar-nav" id="sidebarNav">
         <div style="padding:20px; color:var(--text-muted); font-size:0.82rem;">
-          <span class="loading-spinner"></span> 加载 sidebar.md ...
+          <span class="loading-spinner"></span> 加载 README.md ...
         </div>
       </nav>
       <div class="sidebar-footer">
-        数据来源: sidebar.md &middot; Powered by GitHub Pages
+        数据来源: README.md &middot; Powered by GitHub Pages
       </div>
     </aside>
 
-    <!-- Overlay for mobile -->
+    <!-- Overlay -->
     <div class="overlay" id="overlay"></div>
 
     <!-- Main -->
@@ -641,20 +662,19 @@
 
   <script>
     // ========== Configuration ==========
-    const SIDEBAR_FILE = 'sidebar.md';
+    const SIDEBAR_FILE = 'README.md';
 
     // ========== State ==========
-    let sidebarData = [];      // parsed structure
-    let allLinks = [];         // flat list of all links
+    let sidebarData = [];
+    let allLinks = [];
     let currentSection = null;
 
-    // ========== DOM References ==========
+    // ========== DOM ==========
     const sidebarNav = document.getElementById('sidebarNav');
     const mainContent = document.getElementById('mainContent');
     const breadcrumb = document.getElementById('breadcrumb');
     const searchInput = document.getElementById('searchInput');
     const linkCount = document.getElementById('linkCount');
-    const emptyState = document.getElementById('emptyState');
     const siteTitle = document.getElementById('siteTitle');
     const menuToggle = document.getElementById('menuToggle');
     const sidebar = document.getElementById('sidebar');
@@ -671,7 +691,7 @@
       overlay.classList.remove('active');
     });
 
-    // ========== Markdown Parser (custom for sidebar) ==========
+    // ========== Parse README.md ==========
     function parseSidebarMarkdown(md) {
       const lines = md.split('\n');
       const sections = [];
@@ -681,14 +701,14 @@
       for (const raw of lines) {
         const line = raw.trim();
 
-        // Top-level title: # Title
+        // Title: # Title (first level-1 heading only)
         const titleMatch = line.match(/^#\s+(.+)$/);
         if (titleMatch && !line.startsWith('##')) {
           siteTitle.textContent = titleMatch[1].trim();
           continue;
         }
 
-        // Section header: ## Section
+        // Section: ## Section
         const h2Match = line.match(/^##\s+(.+)$/);
         if (h2Match) {
           currentSec = {
@@ -700,7 +720,7 @@
           continue;
         }
 
-        // Icon line: > emoji  (placed right after ## to set section icon)
+        // Icon: > emoji
         if (currentSec && line.startsWith('>')) {
           const iconText = line.replace(/^>\s*/, '').trim();
           if (iconText.length <= 4) {
@@ -709,8 +729,8 @@
           continue;
         }
 
-        // Link item: - [Label](url) description
-        // or: - icon [Label](url) description
+        // Link: - [Label](url) description
+        // or:   - icon [Label](url) description
         const linkMatch = line.match(/^-\s+(?:(\S+)\s+)?$$(.+?)$$$$(.+?)$$\s*(.*)?$/);
         if (linkMatch && currentSec) {
           const item = {
@@ -732,7 +752,7 @@
     // ========== Render Sidebar ==========
     function renderSidebar(sections) {
       if (sections.length === 0) {
-        sidebarNav.innerHTML = '<div style="padding:20px; color:var(--text-muted); font-size:0.82rem;">sidebar.md 中未找到导航数据</div>';
+        sidebarNav.innerHTML = '<div style="padding:20px; color:var(--text-muted); font-size:0.82rem;">README.md 中未找到导航数据</div>';
         return;
       }
 
@@ -756,7 +776,7 @@
       sidebarNav.innerHTML = html;
     }
 
-    // ========== Toggle Section Collapse ==========
+    // ========== Toggle Section ==========
     function toggleSection(si) {
       const el = document.querySelector(`.nav-section[data-section="${si}"]`);
       if (el) el.classList.toggle('collapsed');
@@ -768,18 +788,14 @@
       const sec = sidebarData[si];
       const item = sec.items[ii];
 
-      // Update active state
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
       if (event.currentTarget) event.currentTarget.classList.add('active');
 
-      // Update breadcrumb
       breadcrumb.innerHTML = `<span>${sec.title}</span><span class="sep">/</span><span>${item.label}</span>`;
 
-      // Close mobile menu
       sidebar.classList.remove('open');
       overlay.classList.remove('active');
 
-      // Try to load linked .md file as content, otherwise show link card
       if (item.url.endsWith('.md')) {
         loadContent(item.url, item.label);
       } else {
@@ -789,9 +805,8 @@
       currentSection = si;
     }
 
-    // ========== Show Link Page (for external URLs) ==========
+    // ========== Show Link Page ==========
     function showLinkPage(sec, item) {
-      // Build a page showing the link and all related links in the section
       let html = '<div class="content-area">';
       html += `<h1>${sec.icon ? sec.icon + ' ' : ''}${item.label}</h1>`;
 
@@ -799,15 +814,8 @@
         html += `<p style="color:var(--text-secondary); margin-bottom:8px;">${item.desc}</p>`;
       }
 
-      html += `<p><a href="${item.url}" target="_blank" rel="noopener" style="
-        display:inline-block; padding:10px 24px; background:var(--accent); color:var(--bg);
-        border-radius:var(--radius); font-weight:500; font-size:0.85rem; border-bottom:none;
-        margin:12px 0 28px; transition:all 0.2s;
-      " onmouseover="this.style.background='var(--accent-dim)'" onmouseout="this.style.background='var(--accent)'">
-        前往访问 &rarr;
-      </a></p>`;
+      html += `<p><a class="visit-btn" href="${item.url}" target="_blank" rel="noopener">前往访问 &rarr;</a></p>`;
 
-      // Show other links in same section
       if (sec.items.length > 1) {
         html += `<h2>同分类推荐</h2>`;
         html += '<div class="link-grid">';
@@ -828,7 +836,7 @@
       mainContent.scrollTop = 0;
     }
 
-    // ========== Load Content from .md File ==========
+    // ========== Load .md Content ==========
     async function loadContent(url, label) {
       mainContent.innerHTML = `<div class="content-area"><p><span class="loading-spinner"></span> 加载 ${label} ...</p></div>`;
 
@@ -844,14 +852,14 @@
       }
     }
 
-    // ========== Show All Links (overview) ==========
+    // ========== Show Overview ==========
     function showOverview() {
       let html = '<div class="content-area"><h1>全部链接</h1>';
 
       sidebarData.forEach(sec => {
         html += `<h2>${sec.title}</h2>`;
         html += '<div class="link-grid">';
-        sec.items.forEach((item, ii) => {
+        sec.items.forEach(item => {
           html += `<a class="link-card" href="${item.url}" target="_blank" rel="noopener" style="text-decoration:none;">`;
           html += `<div class="card-icon">${item.icon || '&#9679;'}</div>`;
           html += `<div class="card-body">`;
@@ -873,13 +881,11 @@
       const q = e.target.value.toLowerCase().trim();
 
       if (!q) {
-        // Restore sidebar
         document.querySelectorAll('.nav-section').forEach(el => el.style.display = '');
         document.querySelectorAll('.nav-item').forEach(el => el.style.display = '');
         return;
       }
 
-      // Filter sidebar items
       document.querySelectorAll('.nav-section').forEach(sec => {
         let hasVisible = false;
         sec.querySelectorAll('.nav-item').forEach(item => {
@@ -889,11 +895,9 @@
           if (match) hasVisible = true;
         });
         sec.style.display = hasVisible ? '' : 'none';
-        // Auto-expand matching sections
         if (hasVisible) sec.classList.remove('collapsed');
       });
 
-      // Also show search results in main content
       const results = allLinks.filter(l =>
         l.label.toLowerCase().includes(q) ||
         l.desc.toLowerCase().includes(q) ||
@@ -920,7 +924,7 @@
       }
     });
 
-    // ========== Initialize ==========
+    // ========== Init ==========
     async function init() {
       try {
         const resp = await fetch(SIDEBAR_FILE);
@@ -929,14 +933,13 @@
         sidebarData = parseSidebarMarkdown(md);
         renderSidebar(sidebarData);
 
-        // Auto-show overview
         if (sidebarData.length > 0) {
           showOverview();
         }
       } catch (err) {
-        sidebarNav.innerHTML = `<div style="padding:20px; color:#e74c3c; font-size:0.82rem;">
+        sidebarNav.innerHTML = `<div style="padding:20px; color:#c0392b; font-size:0.82rem;">
           加载失败: ${err.message}<br><br>
-          <span style="color:var(--text-muted);">请确保 <code>sidebar.md</code> 文件存在于根目录</span>
+          <span style="color:var(--text-muted);">请确保 <code>README.md</code> 文件存在于根目录</span>
         </div>`;
       }
     }

@@ -1,57 +1,54 @@
-# 我的网址导航
+# 我的导航站
 
-## 🔍 搜索引擎
-- [Google](https://www.google.com)
-- [Bing](https://www.bing.com)
-- [百度](https://www.baidu.com)
-- [DuckDuckGo](https://duckduckgo.com)
+## 前端开发
+> 🎨
+- 🌐 [MDN Web Docs](https://developer.mozilla.org/) Web 技术权威文档
+- 🌐 [Can I Use](https://caniuse.com/) 浏览器兼容性查询
+- ⚡ [Vite](https://vitejs.dev/) 下一代前端构建工具
+- ⚡ [Webpack](https://webpack.js.org/) 模块打包器
+- 🎯 [Tailwind CSS](https://tailwindcss.com/) 实用优先的 CSS 框架
+- 🎯 [UnoCSS](https://unocss.dev/) 即时原子化 CSS 引擎
 
-## 📱 社交媒体
-- [Twitter/X](https://twitter.com)
-- [微博](https://weibo.com)
-- [Reddit](https://www.reddit.com)
-- [知乎](https://www.zhihu.com)
+## 前端框架
+> ⚛️
+- 💚 [Vue.js](https://vuejs.org/) 渐进式 JavaScript 框架
+- 💙 [React](https://react.dev/) 用于构建用户界面的库
+- 🧡 [Svelte](https://svelte.dev/) 编译时框架
+- 🟥 [Angular](https://angular.io/) 平台与框架
 
-## 💻 开发技术
-- [GitHub](https://github.com)
-- [Stack Overflow](https://stackoverflow.com)
-- [MDN Web Docs](https://developer.mozilla.org)
-- [Vue.js](https://vuejs.org)
-- [React](https://react.dev)
+## 后端 & 运行时
+> 🛠
+- 🟢 [Node.js](https://nodejs.org/) JavaScript 运行时
+- 🦕 [Deno](https://deno.land/) 安全的运行时
+- 🐹 [Go](https://go.dev/) 简洁高效的编程语言
+- 🦀 [Rust](https://www.rust-lang.org/) 安全的系统编程语言
+- 🐍 [Python](https://www.python.org/) 通用编程语言
 
-## 🛠️ 在线工具
-- [TinyPNG](https://tinypng.com) - 图片压缩
-- [Carbon](https://carbon.now.sh) - 代码转图片
-- [JSON格式化](https://jsonformatter.org)
-- [Convertio](https://convertio.co/zh/) - 文件转换
+## 数据库
+> 🗄
+- 🐘 [PostgreSQL](https://www.postgresql.org/) 强大的关系型数据库
+- 🍃 [MongoDB](https://www.mongodb.com/) 文档型数据库
+- 🔴 [Redis](https://redis.io/) 内存数据库
+- 🪶 [SQLite](https://www.sqlite.org/) 轻量嵌入式数据库
 
-## 📚 学习资源
-- [Coursera](https://www.coursera.org)
-- [freeCodeCamp](https://www.freecodecamp.org)
-- [MDN Learning](https://developer.mozilla.org/en-US/docs/Learn)
-- [阮一峰博客](https://www.ruanyifeng.com/blog/)
+## 设计资源
+> 🎨
+- 🎨 [Figma](https://www.figma.com/) 协作设计工具
+- 🎨 [Dribbble](https://dribbble.com/) 设计灵感社区
+- 🖼 [Unsplash](https://unsplash.com/) 免费高质量图片
+- ✏️ [Excalidraw](https://excalidraw.com/) 手绘风格白板
 
-## 🎨 设计资源
-- [Dribbble](https://dribbble.com)
-- [Behance](https://www.behance.net)
-- [Unsplash](https://unsplash.com) - 免费图片
-- [Figma](https://figma.com)
+## AI 工具
+> 🤖
+- 🤖 [ChatGPT](https://chat.openai.com/) AI 对话助手
+- 🤖 [Claude](https://claude.ai/) AI 助手
+- 🎨 [Midjourney](https://www.midjourney.com/) AI 图像生成
+- 🔍 [Perplexity](https://www.perplexity.ai/) AI 搜索引擎
 
-## ☁️ 云服务
-- [Notion](https://notion.so)
-- [Obsidian](https://obsidian.md)
-- [Google Drive](https://drive.google.com)
-- [阿里云盘](https://www.aliyundrive.com)
-
-## 🤖 AI工具
-- [ChatGPT](https://chat.openai.com) - 通用大语言模型
-- [Claude](https://claude.ai) - 长文本处理友好的AI助手
-- [Midjourney](https://www.midjourney.com) - AI绘画工具
-- [文心一言](https://yiyan.baidu.com) - 百度中文大模型
-- [Stable Diffusion WebUI](https://github.com/AUTOMATIC1111/stable-diffusion-webui) - 开源本地AI绘图工具
-- [Perplexity](https://www.perplexity.ai) - AI联网搜索工具
-
----
-
-*最后更新：2026-07-19*
-*点击链接即可访问，建议收藏本页面*
+## 效率工具
+> ⚡
+- 📝 [Notion](https://www.notion.so/) 笔记与协作
+- 📝 [Obsidian](https://obsidian.md/) 知识管理
+- 🐙 [GitHub](https://github.com/) 代码托管平台
+- 📊 [Vercel](https://vercel.com/) 前端部署平台
+- 📊 [Netlify](https://www.netlify.com/) 现代网站部署
