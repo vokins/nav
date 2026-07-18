@@ -1,5 +1,37 @@
 # 网址导航
 
+## 搜索
+### 外文搜索
+- [Backdata](https://backdata.net)
+- [Bing](https://global.bing.com/?setmkt=en-US&setlang=en)
+- [DuckDuckGo](https://duckduckgo.com)
+- [Ecosia](https://www.ecosia.org)
+- [Ecosia](https://www.ecosia.org)
+- [GoogleNCR](https://www.google.com/ncr)
+- [Startpage](https://www.startpage.com)
+- [Wolfram](https://www.wolframalpha.com)
+- [Yahoo](https://search.yahoo.com)
+- [Yandex](https://yandex.com)
+- [Yep](https://yep.com)
+### 中文搜索
+- [360](https://www.so.com)
+- [微信搜索](https://weixin.sogou.com)
+- [必应](https://cn.bing.com/)
+- [汉典](https://zdic.net)
+- [百度](https://www.baidu.com/?tn=baiduhome)
+- [维基百科](https://zh.wikipedia.org)
+
+## AI
+- [DeepSeek](https://chat.deepseek.com)
+- [Kimi AI](https://www.kimi.com/)
+- [Xiaomi MiMo](https://aistudio.xiaomimimo.com/)
+- [豆包](https://www.doubao.com/chat)
+- [千问](https://www.qianwen.com)
+- [智谱清言](https://chatglm.cn)
+- [腾讯元宝](https://yuanbao.tencent.com/chat)
+- [文心一言](https://wenxin.baidu.com)
+
+
 ## 金融
 - [全国人社政务服务平台](https://www.12333.gov.cn) 12333
 - [国家税务总局](https://12366.chinatax.gov.cn) 12366
@@ -57,10 +89,6 @@
 - [泰康保险](http://www.hxb.com.cn) 95522
 - [新华保险](http://www.hxb.com.cn) 95522
 
-
-
-
-
 - [中华联合保险](http://www.cmbc.com.cn) 95585
 - [阳光保险](http://www.hxb.com.cn) 95510
 - [华泰保险](https://www.cebbank.com) 95509
@@ -69,7 +97,5 @@
 - [富德保险](https://www.funde-ins.com) 95535
 - [安联保险](https://www.allianzholding.cn) 95569
 
-
-
-安邦财产保险 - 95569 
-中国再保-大地 - 95590
+- [安邦财产保险 ](https://www.allianzholding.cn) 95569 
+- [中国再保-大地 ](https://www.allianzholding.cn) 95590
