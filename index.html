@@ -81,10 +81,7 @@
       font-weight: 400;
     }
 
-    .sidebar-search {
-      padding: 12px 16px;
-      flex-shrink: 0;
-    }
+    .sidebar-search { padding: 12px 16px; flex-shrink: 0; }
 
     .sidebar-search input {
       width: 100%;
@@ -112,7 +109,6 @@
       padding: 8px 0 20px;
     }
 
-    /* Sidebar: section title only, no expand */
     .nav-sec-btn {
       display: flex;
       align-items: center;
@@ -153,13 +149,6 @@
     }
 
     .nav-sec-btn.active::before { height: 50%; }
-
-    .nav-sec-btn .sec-icon {
-      font-size: 1rem;
-      width: 20px;
-      text-align: center;
-      flex-shrink: 0;
-    }
 
     .nav-sec-btn .sec-label {
       flex: 1;
@@ -241,7 +230,7 @@
       padding: 36px 40px 80px;
     }
 
-    /* ===== Section in main content ===== */
+    /* ===== Section header ===== */
     .page-section {
       margin-bottom: 48px;
       scroll-margin-top: 24px;
@@ -249,33 +238,26 @@
 
     .page-section-title {
       font-family: var(--font-display);
-      font-size: 1.5rem;
+      font-size: 1.45rem;
       font-weight: 700;
       color: var(--text-primary);
       padding-bottom: 10px;
       margin-bottom: 18px;
       border-bottom: 2px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .page-section-title .sec-icon {
-      font-size: 1.3rem;
     }
 
     /* ===== Link Grid ===== */
     .link-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-      gap: 12px;
+      gap: 10px;
     }
 
     .link-card {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 14px 16px;
+      gap: 10px;
+      padding: 11px 14px;
       background: var(--bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -288,49 +270,82 @@
     .link-card:hover {
       border-color: var(--accent-dim);
       background: var(--accent-glow);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      transform: translateY(-1px);
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
     }
 
+    .link-card.hidden { display: none; }
+
+    /* Favicon icon — small, subtle */
     .link-card .card-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      background: var(--surface);
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.1rem;
-      flex-shrink: 0;
+    }
+
+    .link-card .card-icon img {
+      width: 20px;
+      height: 20px;
+      border-radius: 3px;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* Fallback letter icon */
+    .link-card .card-icon .fallback-letter {
+      width: 20px;
+      height: 20px;
+      border-radius: 3px;
+      background: var(--surface-raised);
       border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
     }
 
     .link-card .card-body {
       flex: 1;
       min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .link-card .card-title {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 500;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    .link-card .card-desc {
-      font-size: 0.72rem;
+    .link-card .card-url {
+      font-size: 0.68rem;
       color: var(--text-muted);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      margin-top: 2px;
+      flex-shrink: 2;
     }
 
-    /* ===== Search highlight ===== */
-    .link-card.hidden { display: none; }
+    .link-card .card-desc-tag {
+      font-size: 0.66rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 120px;
+      flex-shrink: 3;
+    }
 
-    /* ===== Loading ===== */
+    /* Loading */
     .loading-spinner {
       display: inline-block;
       width: 18px;
@@ -363,7 +378,6 @@
 
     .empty-state p { font-size: 0.85rem; }
 
-    /* Overlay */
     .overlay {
       display: none;
       position: fixed;
@@ -386,7 +400,7 @@
 
       .sidebar.open { transform: translateX(0); }
       .menu-toggle { display: block; }
-      .main-content { padding: 24px 20px 60px; }
+      .main-content { padding: 24px 16px 60px; }
       .link-grid { grid-template-columns: 1fr; }
     }
   </style>
@@ -394,7 +408,6 @@
 
 <body>
   <div class="app">
-    <!-- Sidebar: only section titles -->
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <h1 id="siteTitle">导航站</h1>
@@ -414,7 +427,6 @@
 
     <div class="overlay" id="overlay"></div>
 
-    <!-- Main: full link page -->
     <div class="main">
       <header class="main-header">
         <button class="menu-toggle" id="menuToggle">&#9776;</button>
@@ -436,9 +448,8 @@
     var SIDEBAR_FILE = 'README.md';
     var sidebarData = [];
     var allLinks = [];
-    var secEls = []; // main-content section DOM elements for scrollspy
+    var secEls = [];
 
-    // ========== DOM ==========
     var sidebarNav  = document.getElementById('sidebarNav');
     var mainContent = document.getElementById('mainContent');
     var searchInput = document.getElementById('searchInput');
@@ -448,7 +459,7 @@
     var sidebar     = document.getElementById('sidebar');
     var overlay     = document.getElementById('overlay');
 
-    // ========== Mobile ==========
+    // Mobile
     menuToggle.addEventListener('click', function() {
       sidebar.classList.toggle('open');
       overlay.classList.toggle('active');
@@ -458,7 +469,7 @@
       overlay.classList.remove('active');
     });
 
-    // ========== Esc HTML ==========
+    // ========== Esc ==========
     function esc(s) {
       var d = document.createElement('div');
       d.textContent = s;
@@ -466,7 +477,59 @@
     }
 
     // ========================================================
-    //  PARSER — charAt-based, no regex for line classification
+    //  Favicon: extract host, build favicon URL
+    //  Uses Google S2 favicon service as primary,
+    //  falls back to showing first letter of domain
+    // ========================================================
+    function getHost(url) {
+      try {
+        return new URL(url).hostname;
+      } catch(e) {
+        // Try manual parse
+        var m = url.match(/^https?:\/\/([^\/]+)/);
+        return m ? m[1] : '';
+      }
+    }
+
+    function faviconUrl(url) {
+      var host = getHost(url);
+      if (!host) return '';
+      return 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(host) + '&sz=32';
+    }
+
+    function firstLetter(url) {
+      var host = getHost(url);
+      if (!host) return '?';
+      // Strip www.
+      var name = host.replace(/^www\./, '');
+      return name.charAt(0).toUpperCase();
+    }
+
+    function shortHost(url) {
+      var host = getHost(url);
+      if (!host) return '';
+      return host.replace(/^www\./, '');
+    }
+
+    // Build card icon HTML: favicon img with onerror fallback
+    function cardIconHtml(url) {
+      var fav = faviconUrl(url);
+      var letter = firstLetter(url);
+
+      if (!fav) {
+        return '<div class="card-icon"><span class="fallback-letter">' + letter + '</span></div>';
+      }
+
+      return '<div class="card-icon">' +
+        '<img src="' + esc(fav) + '" alt="" loading="lazy"' +
+        ' onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"' +
+        ' width="20" height="20">' +
+        '<span class="fallback-letter" style="display:none">' + letter + '</span>' +
+        '</div>';
+    }
+
+    // ========================================================
+    //  PARSER
     // ========================================================
     function parseSidebarMarkdown(md) {
       if (md.charCodeAt(0) === 0xFEFF) md = md.substring(1);
@@ -475,8 +538,6 @@
       var sections = [];
       var currentSec = null;
       var inCodeBlock = false;
-
-      console.log('[Nav] Parsing', lines.length, 'lines');
 
       for (var i = 0; i < lines.length; i++) {
         var raw = lines[i].replace(/\r/g, '');
@@ -501,11 +562,7 @@
 
         // ## Section
         if (c0 === '#' && c1 === '#' && c2 === ' ') {
-          currentSec = {
-            title: trimmed.substring(3).trim(),
-            icon: '',
-            items: []
-          };
+          currentSec = { title: trimmed.substring(3).trim(), icon: '', items: [] };
           sections.push(currentSec);
           continue;
         }
@@ -534,9 +591,7 @@
             var url   = trimmed.substring(rb + 2, lp).trim();
 
             var icon = '';
-            if (lb > 2) {
-              icon = trimmed.substring(2, lb).trim();
-            }
+            if (lb > 2) icon = trimmed.substring(2, lb).trim();
 
             var desc = '';
             if (lp < trimmed.length - 1) {
@@ -554,17 +609,16 @@
       }
 
       linkCount.textContent = allLinks.length;
-      console.log('[Nav] Parsed:', sections.length, 'sections,', allLinks.length, 'links');
+      console.log('[Nav]', sections.length, 'sections,', allLinks.length, 'links');
       return sections;
     }
 
     // ========================================================
-    //  Render Sidebar — section titles only, no expand
+    //  Render Sidebar
     // ========================================================
     function renderSidebar(sections) {
       if (!sections.length) {
-        sidebarNav.innerHTML =
-          '<div style="padding:20px;color:var(--text-muted);font-size:0.82rem;">未找到分类</div>';
+        sidebarNav.innerHTML = '<div style="padding:20px;color:var(--text-muted);font-size:0.82rem;">未找到分类</div>';
         return;
       }
 
@@ -572,7 +626,6 @@
       for (var i = 0; i < sections.length; i++) {
         var sec = sections[i];
         html += '<div class="nav-sec-btn" data-sec="' + i + '" onclick="scrollToSection(' + i + ')">';
-        html += '<span class="sec-icon">' + (sec.icon || '&#8226;') + '</span>';
         html += '<span class="sec-label">' + esc(sec.title) + '</span>';
         html += '<span class="sec-count">' + sec.items.length + '</span>';
         html += '</div>';
@@ -582,7 +635,7 @@
     }
 
     // ========================================================
-    //  Render Main Content — all links in one page
+    //  Render Main Content — all links with favicon
     // ========================================================
     function renderMainContent(sections) {
       if (!sections.length || !allLinks.length) {
@@ -603,24 +656,27 @@
         if (!sec.items.length) continue;
 
         html += '<div class="page-section" id="sec-' + si + '">';
-
-        html += '<div class="page-section-title">';
-        html += '<span class="sec-icon">' + (sec.icon || '') + '</span>';
-        html += '<span>' + esc(sec.title) + '</span>';
-        html += '</div>';
-
+        html += '<div class="page-section-title">' + esc(sec.title) + '</div>';
         html += '<div class="link-grid">';
 
         for (var ii = 0; ii < sec.items.length; ii++) {
           var item = sec.items[ii];
+          var host = shortHost(item.url);
+
           html += '<a class="link-card" href="' + esc(item.url) + '" target="_blank" rel="noopener">';
-          html += '<div class="card-icon">' + (item.icon || '&#8226;') + '</div>';
+
+          // Icon: auto favicon
+          html += cardIconHtml(item.url);
+
+          // Body
           html += '<div class="card-body">';
-          html += '<div class="card-title">' + esc(item.label) + '</div>';
-          if (item.desc) {
-            html += '<div class="card-desc">' + esc(item.desc) + '</div>';
+          html += '<span class="card-title">' + esc(item.label) + '</span>';
+          if (host) {
+            html += '<span class="card-url">' + esc(host) + '</span>';
           }
-          html += '</div></a>';
+          html += '</div>';
+
+          html += '</a>';
         }
 
         html += '</div></div>';
@@ -628,7 +684,8 @@
 
       mainContent.innerHTML = html;
 
-      // Cache section elements for scrollspy
+      // Cache section elements
+      secEls = [];
       for (var j = 0; j < sections.length; j++) {
         var el = document.getElementById('sec-' + j);
         if (el) secEls.push({ index: j, el: el });
@@ -640,17 +697,13 @@
     // ========================================================
     function scrollToSection(si) {
       var target = document.getElementById('sec-' + si);
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-
-      // Close mobile sidebar
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       sidebar.classList.remove('open');
       overlay.classList.remove('active');
     }
 
     // ========================================================
-    //  Scrollspy — highlight sidebar based on scroll position
+    //  Scrollspy
     // ========================================================
     var scrollspyTimer = null;
 
@@ -662,7 +715,6 @@
     function doScrollspy() {
       var scrollTop = mainContent.scrollTop;
       var triggerY = scrollTop + 80;
-
       var activeIdx = 0;
 
       for (var i = 0; i < secEls.length; i++) {
@@ -683,40 +735,36 @@
     }
 
     // ========================================================
-    //  Search — filter cards and sidebar sections
+    //  Search
     // ========================================================
     searchInput.addEventListener('input', function(e) {
       var q = e.target.value.toLowerCase().trim();
-
-      // Filter sidebar
       var btns = document.querySelectorAll('.nav-sec-btn');
       var sections = document.querySelectorAll('.page-section');
+      var i, j, k;
 
       if (!q) {
-        // Show everything
-        for (var i = 0; i < btns.length; i++) btns[i].style.display = '';
-        for (var j = 0; j < sections.length; j++) {
+        for (i = 0; i < btns.length; i++) btns[i].style.display = '';
+        for (j = 0; j < sections.length; j++) {
           sections[j].style.display = '';
           var cards = sections[j].querySelectorAll('.link-card');
-          for (var k = 0; k < cards.length; k++) cards[k].classList.remove('hidden');
+          for (k = 0; k < cards.length; k++) cards[k].classList.remove('hidden');
         }
         return;
       }
 
-      // Filter each section and its cards
-      for (var si = 0; si < sections.length; si++) {
-        var sec = sections[si];
+      for (i = 0; i < sections.length; i++) {
+        var sec = sections[i];
         var cards = sec.querySelectorAll('.link-card');
         var hasVisible = false;
 
-        for (var ci = 0; ci < cards.length; ci++) {
-          var card = cards[ci];
-          var title = card.querySelector('.card-title');
-          var desc = card.querySelector('.card-desc');
-          var text = title.textContent.toLowerCase();
-          if (desc) text += ' ' + desc.textContent.toLowerCase();
+        for (j = 0; j < cards.length; j++) {
+          var card = cards[j];
+          var title = card.querySelector('.card-title').textContent.toLowerCase();
+          var urlEl = card.querySelector('.card-url');
+          var urlText = urlEl ? urlEl.textContent.toLowerCase() : '';
 
-          if (text.indexOf(q) !== -1) {
+          if (title.indexOf(q) !== -1 || urlText.indexOf(q) !== -1) {
             card.classList.remove('hidden');
             hasVisible = true;
           } else {
@@ -727,11 +775,10 @@
         sec.style.display = hasVisible ? '' : 'none';
       }
 
-      // Sync sidebar
-      for (var bi = 0; bi < btns.length; bi++) {
-        var idx = parseInt(btns[bi].getAttribute('data-sec'), 10);
+      for (k = 0; k < btns.length; k++) {
+        var idx = parseInt(btns[k].getAttribute('data-sec'), 10);
         var secEl = document.getElementById('sec-' + idx);
-        btns[bi].style.display = (secEl && secEl.style.display !== 'none') ? '' : 'none';
+        btns[k].style.display = (secEl && secEl.style.display !== 'none') ? '' : 'none';
       }
     });
 
@@ -739,34 +786,22 @@
     //  INIT
     // ========================================================
     (function init() {
-      console.log('[Nav] Fetching', SIDEBAR_FILE);
-
       fetch(SIDEBAR_FILE).then(function(resp) {
         if (!resp.ok) throw new Error('HTTP ' + resp.status);
         return resp.text();
       }).then(function(md) {
-        console.log('[Nav] Loaded', md.length, 'chars');
-
         sidebarData = parseSidebarMarkdown(md);
         renderSidebar(sidebarData);
         renderMainContent(sidebarData);
-
-        // Run scrollspy once after render
         setTimeout(doScrollspy, 100);
       }).catch(function(err) {
         console.error('[Nav]', err);
         sidebarNav.innerHTML =
           '<div style="padding:20px;color:#c0392b;font-size:0.82rem;">' +
           '加载失败: ' + err.message + '<br><br>' +
-          '<span style="color:var(--text-muted);">' +
-          '请确保 <code>README.md</code> 存在于根目录</span></div>';
-
+          '<span style="color:var(--text-muted);">确保 README.md 存在于根目录</span></div>';
         mainContent.innerHTML =
-          '<div class="empty-state">' +
-          '<div class="empty-icon">&#9888;</div>' +
-          '<p>加载 README.md 失败</p>' +
-          '<p style="font-size:0.75rem;margin-top:8px;">' + err.message + '</p>' +
-          '</div>';
+          '<div class="empty-state"><div class="empty-icon">&#9888;</div><p>加载失败</p></div>';
       });
     })();
   </script>
