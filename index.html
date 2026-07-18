@@ -177,7 +177,7 @@
     .menu-toggle:hover { border-color: var(--accent-dim); color: var(--accent); }
     .main-content { flex: 1; overflow-y: auto; padding: 36px 40px 60px; }
 
-    /* ===== Content Area ===== */
+    /* ===== Content ===== */
     .content-area { max-width: 960px; }
 
     .content-area h1 {
@@ -259,7 +259,7 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       text-decoration: none; color: var(--text-primary);
-      transition: transform 0.2s ease, border-color 0.2s, box-shadow 0.2s, background 0.2s;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s, background 0.2s;
       cursor: pointer;
     }
 
@@ -291,7 +291,6 @@
       margin-top: 2px;
     }
 
-    /* ===== Visit Button ===== */
     .visit-btn {
       display: inline-block; padding: 10px 24px;
       background: var(--accent); color: #fff;
@@ -304,7 +303,6 @@
 
     .visit-btn:hover { background: var(--accent-dim); border-bottom: none; }
 
-    /* ===== Empty State ===== */
     .empty-state {
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
@@ -314,7 +312,6 @@
     .empty-state .empty-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.25; }
     .empty-state p { font-size: 0.85rem; }
 
-    /* ===== Loading ===== */
     .loading-spinner {
       display: inline-block; width: 18px; height: 18px;
       border: 2px solid var(--border); border-top-color: var(--accent);
@@ -337,6 +334,39 @@
 
     .overlay.active { display: block; }
 
+    /* ===== Diagnostic Panel ===== */
+    .diag-panel {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      max-height: 220px; overflow: auto;
+      background: #1e1e1e; color: #d4d4d4;
+      font-family: var(--font-mono); font-size: 0.72rem;
+      padding: 12px 16px;
+      border-top: 2px solid var(--accent);
+      z-index: 9999;
+      display: none;
+    }
+
+    .diag-panel.show { display: block; }
+
+    .diag-panel .diag-line { padding: 1px 0; white-space: pre-wrap; word-break: break-all; }
+    .diag-panel .diag-line.ok    { color: #6a9955; }
+    .diag-panel .diag-line.link  { color: #dcdcaa; }
+    .diag-panel .diag-line.warn  { color: #ce9178; }
+    .diag-panel .diag-line.err   { color: #f44747; }
+    .diag-panel .diag-line.info  { color: #569cd6; }
+
+    .diag-toggle {
+      position: fixed; bottom: 12px; right: 12px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 6px 12px;
+      font-size: 0.68rem; color: var(--text-muted);
+      cursor: pointer; z-index: 10000;
+      font-family: var(--font-mono);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .diag-toggle:hover { border-color: var(--accent-dim); color: var(--accent); }
+
     /* ===== Mobile ===== */
     @media (max-width: 768px) {
       .sidebar {
@@ -354,7 +384,6 @@
 
 <body>
   <div class="app">
-    <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <h1 id="siteTitle">导航站</h1>
@@ -364,17 +393,16 @@
       </div>
       <nav class="sidebar-nav" id="sidebarNav">
         <div style="padding:20px;color:var(--text-muted);font-size:0.82rem;">
-          <span class="loading-spinner"></span> 加载 README.md ...
+          <span class="loading-spinner"></span> 加载中...
         </div>
       </nav>
       <div class="sidebar-footer">
-        数据来源: README.md &middot; Powered by GitHub Pages
+        数据来源: README.md &middot; GitHub Pages
       </div>
     </aside>
 
     <div class="overlay" id="overlay"></div>
 
-    <!-- Main -->
     <div class="main">
       <header class="main-header">
         <button class="menu-toggle" id="menuToggle">&#9776;</button>
@@ -392,105 +420,193 @@
     </div>
   </div>
 
+  <!-- Diagnostic -->
+  <button class="diag-toggle" id="diagToggle">诊断日志</button>
+  <div class="diag-panel" id="diagPanel"></div>
+
   <script>
-    const SIDEBAR_FILE = 'README.md';
-    let sidebarData = [];
-    let allLinks = [];
+    // ========== Config ==========
+    var SIDEBAR_FILE = 'README.md';
+    var sidebarData = [];
+    var allLinks = [];
+    var diagLines = [];
 
-    const sidebarNav  = document.getElementById('sidebarNav');
-    const mainContent = document.getElementById('mainContent');
-    const breadcrumb  = document.getElementById('breadcrumb');
-    const searchInput = document.getElementById('searchInput');
-    const linkCount   = document.getElementById('linkCount');
-    const siteTitle   = document.getElementById('siteTitle');
-    const menuToggle  = document.getElementById('menuToggle');
-    const sidebar     = document.getElementById('sidebar');
-    const overlay     = document.getElementById('overlay');
+    // ========== DOM ==========
+    var sidebarNav  = document.getElementById('sidebarNav');
+    var mainContent = document.getElementById('mainContent');
+    var breadcrumb  = document.getElementById('breadcrumb');
+    var searchInput = document.getElementById('searchInput');
+    var linkCount   = document.getElementById('linkCount');
+    var siteTitle   = document.getElementById('siteTitle');
+    var menuToggle  = document.getElementById('menuToggle');
+    var sidebar     = document.getElementById('sidebar');
+    var overlay     = document.getElementById('overlay');
+    var diagPanel   = document.getElementById('diagPanel');
+    var diagToggle  = document.getElementById('diagToggle');
 
-    // Mobile
-    menuToggle.addEventListener('click', () => {
+    // ========== Diag ==========
+    function diag(cls, msg) {
+      console.log('[Nav ' + cls + ']', msg);
+      diagLines.push({ cls: cls, msg: msg });
+      var div = document.createElement('div');
+      div.className = 'diag-line ' + cls;
+      div.textContent = msg;
+      diagPanel.appendChild(div);
+      diagPanel.scrollTop = diagPanel.scrollHeight;
+    }
+
+    diagToggle.addEventListener('click', function() {
+      diagPanel.classList.toggle('show');
+    });
+
+    // ========== Mobile ==========
+    menuToggle.addEventListener('click', function() {
       sidebar.classList.toggle('open');
       overlay.classList.toggle('active');
     });
-    overlay.addEventListener('click', () => {
+    overlay.addEventListener('click', function() {
       sidebar.classList.remove('open');
       overlay.classList.remove('active');
     });
 
     // ========================================================
-    //  Parse README.md — two-step robust parser
-    //  Step 1: regex extracts [label](url)
-    //  Step 2: indexOf / lastIndexOf splits icon & desc
+    //  PARSER — ultra robust, charAt-based, heavy logging
     // ========================================================
     function parseSidebarMarkdown(md) {
+      // Strip BOM
+      if (md.charCodeAt(0) === 0xFEFF) {
+        md = md.substring(1);
+        diag('info', 'BOM 已移除');
+      }
+
       var lines = md.split('\n');
       var sections = [];
       var currentSec = null;
-      var totalLinks = 0;
       var inCodeBlock = false;
 
+      diag('info', '共 ' + lines.length + ' 行');
+
       for (var i = 0; i < lines.length; i++) {
-        var raw = lines[i].replace(/\r$/, '');
+        // Normalize: strip \r, get trimmed
+        var raw = lines[i].replace(/\r/g, '');
         var trimmed = raw.trim();
 
-        // Skip code blocks
-        if (trimmed.indexOf('```') === 0) { inCodeBlock = !inCodeBlock; continue; }
-        if (inCodeBlock) continue;
+        // Empty
         if (!trimmed) continue;
 
-        // # Title
-        if (/^#\s/.test(trimmed) && !/^##/.test(trimmed)) {
-          siteTitle.textContent = trimmed.replace(/^#\s+/, '').trim();
+        // Code fence
+        if (trimmed.substring(0, 3) === '```') {
+          inCodeBlock = !inCodeBlock;
+          continue;
+        }
+        if (inCodeBlock) continue;
+
+        // ---- Check what this line is ----
+        var c0 = trimmed.charAt(0);
+        var c1 = trimmed.charAt(1);
+        var c2 = trimmed.charAt(2);
+
+        // # Title (but not ## or ###)
+        if (c0 === '#' && c1 === ' ') {
+          siteTitle.textContent = trimmed.substring(2).trim();
+          diag('ok', 'L' + (i+1) + ' 标题: ' + siteTitle.textContent);
           continue;
         }
 
         // ## Section
-        if (/^##\s/.test(trimmed)) {
-          currentSec = { title: trimmed.replace(/^##\s+/, '').trim(), icon: '', items: [] };
+        if (c0 === '#' && c1 === '#' && c2 === ' ') {
+          var secTitle = trimmed.substring(3).trim();
+          currentSec = { title: secTitle, icon: '', items: [] };
           sections.push(currentSec);
+          diag('ok', 'L' + (i+1) + ' 分类: ' + secTitle);
           continue;
         }
 
-        // > icon (short blockquote)
-        if (currentSec && /^>\s*\S{1,6}\s*$/.test(trimmed)) {
-          currentSec.icon = trimmed.replace(/^>\s*/, '').trim();
+        // > icon line (single short token after >)
+        if (c0 === '>' && currentSec) {
+          var afterGt = trimmed.substring(1).trim();
+          if (afterGt.length > 0 && afterGt.length <= 6 && afterGt.indexOf(' ') === -1) {
+            currentSec.icon = afterGt;
+            diag('ok', 'L' + (i+1) + ' 图标: ' + afterGt);
+            continue;
+          }
+          // Regular blockquote, skip
           continue;
         }
 
-        // - [label](url) desc
-        if (currentSec && /^[-*]\s/.test(trimmed)) {
-          var m = trimmed.match(/$$(.+?)$$$$(.+?)$$/);
-          if (!m) continue;
+        // List item with link: starts with "- " or "* "
+        var isDash  = (c0 === '-' && c1 === ' ');
+        var isStar  = (c0 === '*' && c1 === ' ');
 
-          var label = m[1].trim();
-          var url   = m[2].trim();
+        if (currentSec && (isDash || isStar)) {
+          // Look for [text](url) pattern
+          var lb = trimmed.indexOf('[');
+          var rb = -1; // position of matching ]
+          var lp = -1; // position of matching (
 
-          // icon: text between "- " and "["
-          var bp = trimmed.indexOf('[');
-          var icon = (bp > 1) ? trimmed.substring(1, bp).trim() : '';
+          if (lb !== -1) {
+            rb = trimmed.indexOf(']', lb);
+            if (rb !== -1 && rb + 1 < trimmed.length) {
+              if (trimmed.charAt(rb + 1) === '(') {
+                lp = trimmed.indexOf(')', rb + 1);
+              }
+            }
+          }
 
-          // desc: text after last ")"
-          var lp = trimmed.lastIndexOf(')');
-          var desc = (lp < trimmed.length - 1)
-            ? trimmed.substring(lp + 1).trim().replace(/^[-–—:：\s]+/, '')
-            : '';
+          if (lb !== -1 && rb !== -1 && lp !== -1) {
+            var label = trimmed.substring(lb + 1, rb).trim();
+            var url   = trimmed.substring(rb + 2, lp).trim(); // between ( and )
 
-          var item = { icon: icon, label: label, url: url, desc: desc };
-          currentSec.items.push(item);
-          allLinks.push({ icon: icon, label: label, url: url, desc: desc, section: currentSec.title });
-          totalLinks++;
+            // icon: text between "- " and "["
+            var icon = '';
+            if (lb > 2) {
+              icon = trimmed.substring(2, lb).trim();
+            }
+
+            // desc: text after last ")"
+            var desc = '';
+            if (lp < trimmed.length - 1) {
+              desc = trimmed.substring(lp + 1).trim();
+              // Strip leading punctuation
+              desc = desc.replace(/^[-–—:：\s]+/, '');
+            }
+
+            var item = { icon: icon, label: label, url: url, desc: desc };
+            currentSec.items.push(item);
+            allLinks.push({
+              icon: icon, label: label, url: url, desc: desc,
+              section: currentSec.title
+            });
+
+            diag('link', 'L' + (i+1) + ' [' + icon + '] ' + label + ' → ' + url.substring(0, 50));
+          } else {
+            diag('warn', 'L' + (i+1) + ' 列表项无链接: ' + trimmed.substring(0, 60));
+          }
+          continue;
         }
+
+        // Unrecognized line — silently skip
       }
 
-      console.log('[Nav] Parsed:', sections.length, 'sections,', totalLinks, 'links');
-      linkCount.textContent = totalLinks;
+      // Summary
+      var total = allLinks.length;
+      diag('info', '==== 解析完成: ' + sections.length + ' 分类, ' + total + ' 链接 ====');
+
+      if (sections.length > 0 && total === 0) {
+        diag('err', '警告: 找到分类但 0 个链接! 请检查 README.md 格式');
+        diag('warn', '预期格式: - 🌐 [名称](https://...) 描述');
+      }
+
+      linkCount.textContent = total;
       return sections;
     }
 
     // ========== Render Sidebar ==========
     function renderSidebar(sections) {
       if (!sections.length) {
-        sidebarNav.innerHTML = '<div style="padding:20px;color:var(--text-muted);font-size:0.82rem;">README.md 中未找到导航数据</div>';
+        sidebarNav.innerHTML =
+          '<div style="padding:20px;color:var(--text-muted);font-size:0.82rem;">' +
+          'README.md 中未找到分类 (需要 ## 标题)</div>';
         return;
       }
 
@@ -499,19 +615,20 @@
         var sec = sections[si];
         html += '<div class="nav-section" data-section="' + si + '">';
         html += '<div class="nav-section-title" onclick="toggleSection(' + si + ')">';
-        html += '<span>' + (sec.icon ? sec.icon + ' ' : '') + sec.title + '</span>';
+        html += '<span>' + (sec.icon ? sec.icon + ' ' : '') + escHtml(sec.title) + '</span>';
         html += '<span class="chevron">&#9660;</span>';
         html += '</div><div class="nav-items">';
 
         if (!sec.items.length) {
-          html += '<div style="padding:4px 28px;font-size:0.72rem;color:var(--text-muted);">暂无链接</div>';
+          html += '<div style="padding:4px 28px;font-size:0.72rem;color:var(--text-muted);">';
+          html += '暂无链接</div>';
         }
 
         for (var ii = 0; ii < sec.items.length; ii++) {
           var item = sec.items[ii];
           html += '<a class="nav-item" onclick="selectItem(' + si + ',' + ii + ',event)">';
           html += '<span class="item-icon">' + (item.icon || '&#8226;') + '</span>';
-          html += '<span class="item-label">' + item.label + '</span>';
+          html += '<span class="item-label">' + escHtml(item.label) + '</span>';
           html += '</a>';
         }
 
@@ -519,6 +636,10 @@
       }
 
       sidebarNav.innerHTML = html;
+    }
+
+    function escHtml(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
 
     function toggleSection(si) {
@@ -531,43 +652,44 @@
       var sec  = sidebarData[si];
       var item = sec.items[ii];
 
-      // Active state
-      var items = document.querySelectorAll('.nav-item');
-      for (var k = 0; k < items.length; k++) items[k].classList.remove('active');
+      var all = document.querySelectorAll('.nav-item');
+      for (var k = 0; k < all.length; k++) all[k].classList.remove('active');
       if (e.currentTarget) e.currentTarget.classList.add('active');
 
       breadcrumb.innerHTML =
-        '<span>' + sec.title + '</span><span class="sep">/</span><span>' + item.label + '</span>';
+        '<span>' + escHtml(sec.title) + '</span>' +
+        '<span class="sep">/</span>' +
+        '<span>' + escHtml(item.label) + '</span>';
 
       sidebar.classList.remove('open');
       overlay.classList.remove('active');
 
-      if (item.url.match(/\.md$/)) {
-        loadContent(item.url, item.label);
+      if (item.url.match(/\.md(\?|$)/)) {
+        loadMdContent(item.url, item.label);
       } else {
         showLinkPage(sec, item);
       }
     }
 
-    // ========== Show single link page ==========
+    // ========== Link detail page ==========
     function showLinkPage(sec, item) {
       var html = '<div class="content-area">';
-      html += '<h1>' + (sec.icon ? sec.icon + ' ' : '') + item.label + '</h1>';
+      html += '<h1>' + (sec.icon ? sec.icon + ' ' : '') + escHtml(item.label) + '</h1>';
       if (item.desc) {
-        html += '<p style="color:var(--text-secondary);margin-bottom:8px;">' + item.desc + '</p>';
+        html += '<p style="color:var(--text-secondary);margin-bottom:8px;">' + escHtml(item.desc) + '</p>';
       }
-      html += '<p><a class="visit-btn" href="' + item.url + '" target="_blank" rel="noopener">前往访问 &rarr;</a></p>';
+      html += '<p><a class="visit-btn" href="' + escHtml(item.url) + '" target="_blank" rel="noopener">';
+      html += '前往访问 &rarr;</a></p>';
 
-      // Same-section recommendations
       if (sec.items.length > 1) {
         html += '<h2>同分类推荐</h2><div class="link-grid">';
         for (var i = 0; i < sec.items.length; i++) {
-          var other = sec.items[i];
-          if (other.url === item.url) continue;
-          html += '<a class="link-card" href="' + other.url + '" target="_blank" rel="noopener">';
-          html += '<div class="card-icon">' + (other.icon || '&#8226;') + '</div>';
-          html += '<div class="card-body"><div class="card-title">' + other.label + '</div>';
-          if (other.desc) html += '<div class="card-desc">' + other.desc + '</div>';
+          var o = sec.items[i];
+          if (o.url === item.url) continue;
+          html += '<a class="link-card" href="' + escHtml(o.url) + '" target="_blank" rel="noopener">';
+          html += '<div class="card-icon">' + (o.icon || '&#8226;') + '</div>';
+          html += '<div class="card-body"><div class="card-title">' + escHtml(o.label) + '</div>';
+          if (o.desc) html += '<div class="card-desc">' + escHtml(o.desc) + '</div>';
           html += '</div></a>';
         }
         html += '</div>';
@@ -578,42 +700,39 @@
       mainContent.scrollTop = 0;
     }
 
-    // ========== Load .md as content ==========
-    function loadContent(url, label) {
+    // ========== Load .md file ==========
+    function loadMdContent(url, label) {
       mainContent.innerHTML =
-        '<div class="content-area"><p><span class="loading-spinner"></span> 加载 ' + label + ' ...</p></div>';
+        '<div class="content-area"><p><span class="loading-spinner"></span> 加载 ' + escHtml(label) + ' ...</p></div>';
 
-      fetch(url).then(function(resp) {
-        if (!resp.ok) throw new Error('HTTP ' + resp.status);
-        return resp.text();
+      fetch(url).then(function(r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.text();
       }).then(function(md) {
         mainContent.innerHTML = '<div class="content-area">' + marked.parse(md) + '</div>';
         mainContent.scrollTop = 0;
       }).catch(function(err) {
         mainContent.innerHTML =
-          '<div class="content-area"><h1>' + label + '</h1><p style="color:var(--text-muted);">无法加载: ' + url + '<br>' + err.message + '</p></div>';
+          '<div class="content-area"><h1>' + escHtml(label) + '</h1>' +
+          '<p style="color:var(--text-muted);">无法加载: ' + escHtml(url) + '<br>' + err.message + '</p></div>';
       });
     }
 
-    // ========== Overview: show all links ==========
+    // ========== Overview ==========
     function showOverview() {
-      var html = '<div class="content-area">';
-      html += '<h1>全部链接</h1>';
+      var html = '<div class="content-area"><h1>全部链接</h1>';
 
       for (var si = 0; si < sidebarData.length; si++) {
         var sec = sidebarData[si];
         if (!sec.items.length) continue;
-
-        html += '<h2>' + sec.title + '</h2>';
-        html += '<div class="link-grid">';
+        html += '<h2>' + escHtml(sec.title) + '</h2><div class="link-grid">';
 
         for (var ii = 0; ii < sec.items.length; ii++) {
           var item = sec.items[ii];
-          html += '<a class="link-card" href="' + item.url + '" target="_blank" rel="noopener">';
+          html += '<a class="link-card" href="' + escHtml(item.url) + '" target="_blank" rel="noopener">';
           html += '<div class="card-icon">' + (item.icon || '&#8226;') + '</div>';
-          html += '<div class="card-body">';
-          html += '<div class="card-title">' + item.label + '</div>';
-          if (item.desc) html += '<div class="card-desc">' + item.desc + '</div>';
+          html += '<div class="card-body"><div class="card-title">' + escHtml(item.label) + '</div>';
+          if (item.desc) html += '<div class="card-desc">' + escHtml(item.desc) + '</div>';
           html += '</div></a>';
         }
 
@@ -624,41 +743,34 @@
       mainContent.innerHTML = html;
       breadcrumb.innerHTML = '<span>全部链接</span>';
       mainContent.scrollTop = 0;
-
-      console.log('[Nav] Overview rendered, links:', allLinks.length);
     }
 
     // ========== Search ==========
     searchInput.addEventListener('input', function(e) {
       var q = e.target.value.toLowerCase().trim();
-
-      // Reset sidebar visibility
-      var sections = document.querySelectorAll('.nav-section');
+      var secs = document.querySelectorAll('.nav-section');
       var navItems = document.querySelectorAll('.nav-item');
-      var i;
+      var i, j;
 
       if (!q) {
-        for (i = 0; i < sections.length; i++) sections[i].style.display = '';
+        for (i = 0; i < secs.length; i++) secs[i].style.display = '';
         for (i = 0; i < navItems.length; i++) navItems[i].style.display = '';
         return;
       }
 
-      // Filter sidebar
-      for (i = 0; i < sections.length; i++) {
-        var sec = sections[i];
-        var hasVisible = false;
-        var children = sec.querySelectorAll('.nav-item');
-        for (var j = 0; j < children.length; j++) {
-          var label = children[j].querySelector('.item-label').textContent.toLowerCase();
-          var match = label.indexOf(q) !== -1;
+      for (i = 0; i < secs.length; i++) {
+        var has = false;
+        var children = secs[i].querySelectorAll('.nav-item');
+        for (j = 0; j < children.length; j++) {
+          var lbl = children[j].querySelector('.item-label').textContent.toLowerCase();
+          var match = lbl.indexOf(q) !== -1;
           children[j].style.display = match ? '' : 'none';
-          if (match) hasVisible = true;
+          if (match) has = true;
         }
-        sec.style.display = hasVisible ? '' : 'none';
-        if (hasVisible) sec.classList.remove('collapsed');
+        secs[i].style.display = has ? '' : 'none';
+        if (has) secs[i].classList.remove('collapsed');
       }
 
-      // Search results in main area
       var results = [];
       for (i = 0; i < allLinks.length; i++) {
         var l = allLinks[i];
@@ -671,16 +783,16 @@
 
       if (results.length) {
         var html = '<div class="content-area">';
-        html += '<h1>搜索: "' + e.target.value + '"</h1>';
+        html += '<h1>搜索: "' + escHtml(e.target.value) + '"</h1>';
         html += '<p style="color:var(--text-muted);margin-bottom:20px;">找到 ' + results.length + ' 个结果</p>';
         html += '<div class="link-grid">';
         for (i = 0; i < results.length; i++) {
           var r = results[i];
-          html += '<a class="link-card" href="' + r.url + '" target="_blank" rel="noopener">';
+          html += '<a class="link-card" href="' + escHtml(r.url) + '" target="_blank" rel="noopener">';
           html += '<div class="card-icon">' + (r.icon || '&#8226;') + '</div>';
-          html += '<div class="card-body"><div class="card-title">' + r.label + '</div>';
-          if (r.desc) html += '<div class="card-desc">' + r.desc + '</div>';
-          html += '<div class="card-desc" style="color:var(--accent-dim);">' + r.section + '</div>';
+          html += '<div class="card-body"><div class="card-title">' + escHtml(r.label) + '</div>';
+          if (r.desc) html += '<div class="card-desc">' + escHtml(r.desc) + '</div>';
+          html += '<div class="card-desc" style="color:var(--accent-dim);">' + escHtml(r.section) + '</div>';
           html += '</div></a>';
         }
         html += '</div></div>';
@@ -691,34 +803,48 @@
       }
     });
 
-    // ========== Init ==========
+    // ========================================================
+    //  INIT
+    // ========================================================
     (function init() {
-      console.log('[Nav] Fetching', SIDEBAR_FILE);
+      diag('info', '开始请求 ' + SIDEBAR_FILE);
 
       fetch(SIDEBAR_FILE).then(function(resp) {
-        if (!resp.ok) throw new Error('HTTP ' + resp.status + ' — 文件不存在');
+        diag('info', 'HTTP ' + resp.status);
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
         return resp.text();
       }).then(function(md) {
-        console.log('[Nav] File loaded,', md.length, 'chars');
+        diag('info', '文件 ' + md.length + ' 字符');
+
+        // Show first few lines for debug
+        var preview = md.split('\n').slice(0, 8);
+        for (var p = 0; p < preview.length; p++) {
+          diag('info', '  L' + (p+1) + ': ' + preview[p].replace(/\r/g, '').substring(0, 80));
+        }
 
         sidebarData = parseSidebarMarkdown(md);
         renderSidebar(sidebarData);
 
-        if (sidebarData.length) {
+        if (sidebarData.length && allLinks.length) {
           showOverview();
+        } else if (sidebarData.length && !allLinks.length) {
+          mainContent.innerHTML =
+            '<div class="content-area"><div class="empty-state" style="height:40vh;">' +
+            '<div class="empty-icon">&#9888;</div>' +
+            '<p>找到 ' + sidebarData.length + ' 个分类，但 0 个链接</p>' +
+            '<p style="font-size:0.75rem;margin-top:8px;">请检查 README.md 中链接格式<br>' +
+            '应为: <code>- 🌐 [名称](https://...) 描述</code></p>' +
+            '<p style="font-size:0.72rem;margin-top:12px;color:var(--text-muted);">' +
+            '点击右下角「诊断日志」查看详情</p>' +
+            '</div></div>';
         }
       }).catch(function(err) {
-        console.error('[Nav]', err);
+        diag('err', '加载失败: ' + err.message);
         sidebarNav.innerHTML =
           '<div style="padding:20px;color:#c0392b;font-size:0.82rem;">' +
           '加载失败: ' + err.message + '<br><br>' +
           '<span style="color:var(--text-muted);">' +
-          '请确保 <code>README.md</code> 存在于仓库根目录<br><br>' +
-          '<strong>排查:</strong><br>' +
-          '1. F12 → Console 查看日志<br>' +
-          '2. 直接访问 <code>/README.md</code><br>' +
-          '3. 确认 GitHub Pages 已开启' +
-          '</span></div>';
+          '请确保 <code>README.md</code> 存在于仓库根目录</span></div>';
       });
     })();
   </script>
