@@ -103,11 +103,7 @@
       box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.08);
     }
 
-    .sidebar-nav {
-      flex: 1;
-      overflow-y: auto;
-      padding: 8px 0 20px;
-    }
+    .sidebar-nav { flex: 1; overflow-y: auto; padding: 8px 0 20px; }
 
     .nav-sec-btn {
       display: flex;
@@ -120,7 +116,6 @@
       cursor: pointer;
       transition: all 0.15s ease;
       position: relative;
-      text-decoration: none;
       user-select: none;
     }
 
@@ -136,18 +131,9 @@
       transition: height 0.2s ease;
     }
 
-    .nav-sec-btn:hover {
-      color: var(--text-primary);
-      background: var(--accent-glow);
-    }
-
+    .nav-sec-btn:hover { color: var(--text-primary); background: var(--accent-glow); }
     .nav-sec-btn:hover::before { height: 50%; }
-
-    .nav-sec-btn.active {
-      color: var(--accent);
-      background: var(--accent-glow);
-    }
-
+    .nav-sec-btn.active { color: var(--accent); background: var(--accent-glow); }
     .nav-sec-btn.active::before { height: 50%; }
 
     .nav-sec-btn .sec-icon {
@@ -185,13 +171,7 @@
     }
 
     /* ===== Main ===== */
-    .main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      overflow: hidden;
-    }
+    .main { flex: 1; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
     .main-header {
       height: var(--header-h);
@@ -227,10 +207,7 @@
       cursor: pointer;
     }
 
-    .menu-toggle:hover {
-      border-color: var(--accent-dim);
-      color: var(--accent);
-    }
+    .menu-toggle:hover { border-color: var(--accent-dim); color: var(--accent); }
 
     .main-content {
       flex: 1;
@@ -238,7 +215,7 @@
       padding: 36px 40px 80px;
     }
 
-    /* ===== Section header ===== */
+    /* ===== Section ===== */
     .page-section {
       margin-bottom: 48px;
       scroll-margin-top: 24px;
@@ -257,22 +234,20 @@
       gap: 10px;
     }
 
-    .page-section-title .sec-icon {
-      font-size: 1.2rem;
-    }
+    .page-section-title .sec-icon { font-size: 1.2rem; }
 
     /* ===== Link Grid ===== */
     .link-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: 10px;
     }
 
     .link-card {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       gap: 10px;
-      padding: 12px 14px;
+      padding: 10px 14px;
       background: var(--bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -291,7 +266,7 @@
 
     .link-card.hidden { display: none; }
 
-    /* Favicon icon */
+    /* Favicon */
     .link-card .card-icon {
       width: 18px;
       height: 18px;
@@ -299,7 +274,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-top: 2px;
     }
 
     .link-card .card-icon img {
@@ -310,7 +284,7 @@
       display: block;
     }
 
-    .link-card .card-icon .fallback-letter {
+    .link-card .card-icon .fb {
       width: 18px;
       height: 18px;
       border-radius: 3px;
@@ -325,16 +299,12 @@
       text-transform: uppercase;
     }
 
-    /* Card body: two rows */
+    /* Card text */
     .link-card .card-body {
       flex: 1;
       min-width: 0;
-    }
-
-    .link-card .card-top {
       display: flex;
-      align-items: center;
-      gap: 8px;
+      flex-direction: column;
     }
 
     .link-card .card-title {
@@ -343,27 +313,14 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      flex-shrink: 1;
-    }
-
-    .link-card .card-url {
-      font-size: 0.66rem;
-      color: var(--text-muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      flex-shrink: 2;
-      min-width: 0;
     }
 
     .link-card .card-desc {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      margin-top: 2px;
-      padding-left: 0;
     }
 
     /* Loading & Empty */
@@ -391,12 +348,7 @@
       text-align: center;
     }
 
-    .empty-state .empty-icon {
-      font-size: 3rem;
-      margin-bottom: 16px;
-      opacity: 0.25;
-    }
-
+    .empty-state .empty-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.25; }
     .empty-state p { font-size: 0.85rem; }
 
     .overlay {
@@ -409,16 +361,12 @@
 
     .overlay.active { display: block; }
 
-    /* ===== Mobile ===== */
     @media (max-width: 768px) {
       .sidebar {
-        position: fixed;
-        left: 0;
-        top: 0;
+        position: fixed; left: 0; top: 0;
         transform: translateX(-100%);
         box-shadow: 4px 0 30px rgba(0, 0, 0, 0.12);
       }
-
       .sidebar.open { transform: translateX(0); }
       .menu-toggle { display: block; }
       .main-content { padding: 24px 16px 60px; }
@@ -430,9 +378,7 @@
 <body>
   <div class="app">
     <aside class="sidebar" id="sidebar">
-      <div class="sidebar-header">
-        <h1 id="siteTitle">导航站</h1>
-      </div>
+      <div class="sidebar-header"><h1 id="siteTitle">导航站</h1></div>
       <div class="sidebar-search">
         <input type="text" id="searchInput" placeholder="搜索链接..." autocomplete="off">
       </div>
@@ -496,37 +442,28 @@
     // ========== Favicon ==========
     function getHost(url) {
       try { return new URL(url).hostname; }
-      catch(e) {
-        var m = url.match(/^https?:\/\/([^\/]+)/);
-        return m ? m[1] : '';
-      }
+      catch(e) { var m = url.match(/^https?:\/\/([^\/]+)/); return m ? m[1] : ''; }
     }
 
     function faviconUrl(url) {
-      var host = getHost(url);
-      return host ? 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(host) + '&sz=32' : '';
+      var h = getHost(url);
+      return h ? 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(h) + '&sz=32' : '';
     }
 
     function firstLetter(url) {
-      var host = getHost(url).replace(/^www\./, '');
-      return host ? host.charAt(0).toUpperCase() : '?';
+      var h = getHost(url).replace(/^www\./, '');
+      return h ? h.charAt(0).toUpperCase() : '?';
     }
 
-    function shortHost(url) {
-      return getHost(url).replace(/^www\./, '');
-    }
-
-    function cardIconHtml(url) {
+    function iconHtml(url) {
       var fav = faviconUrl(url);
-      var letter = firstLetter(url);
-      if (!fav) {
-        return '<div class="card-icon"><span class="fallback-letter">' + letter + '</span></div>';
-      }
+      var ch = firstLetter(url);
+      if (!fav) return '<div class="card-icon"><span class="fb">' + ch + '</span></div>';
       return '<div class="card-icon">' +
         '<img src="' + esc(fav) + '" alt="" loading="lazy"' +
         ' onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"' +
         ' width="18" height="18">' +
-        '<span class="fallback-letter" style="display:none">' + letter + '</span>' +
+        '<span class="fb" style="display:none">' + ch + '</span>' +
         '</div>';
     }
 
@@ -536,80 +473,62 @@
 
       var lines = md.split('\n');
       var sections = [];
-      var currentSec = null;
-      var inCodeBlock = false;
+      var cur = null;
+      var inCode = false;
 
       for (var i = 0; i < lines.length; i++) {
         var raw = lines[i].replace(/\r/g, '');
-        var trimmed = raw.trim();
-        if (!trimmed) continue;
+        var t = raw.trim();
+        if (!t) continue;
 
-        if (trimmed.substring(0, 3) === '```') {
-          inCodeBlock = !inCodeBlock;
-          continue;
-        }
-        if (inCodeBlock) continue;
+        if (t.substring(0, 3) === '```') { inCode = !inCode; continue; }
+        if (inCode) continue;
 
-        var c0 = trimmed.charAt(0);
-        var c1 = trimmed.charAt(1);
-        var c2 = trimmed.charAt(2);
+        var c0 = t.charAt(0);
+        var c1 = t.charAt(1);
+        var c2 = t.charAt(2);
 
-        // # Title
         if (c0 === '#' && c1 === ' ') {
-          siteTitle.textContent = trimmed.substring(2).trim();
+          siteTitle.textContent = t.substring(2).trim();
           continue;
         }
 
-        // ## Section
         if (c0 === '#' && c1 === '#' && c2 === ' ') {
-          currentSec = { title: trimmed.substring(3).trim(), icon: '', items: [] };
-          sections.push(currentSec);
+          cur = { title: t.substring(3).trim(), icon: '', items: [] };
+          sections.push(cur);
           continue;
         }
 
-        // > icon
-        if (c0 === '>' && currentSec) {
-          var afterGt = trimmed.substring(1).trim();
-          if (afterGt.length > 0 && afterGt.length <= 6 && afterGt.indexOf(' ') === -1) {
-            currentSec.icon = afterGt;
-          }
+        if (c0 === '>' && cur) {
+          var gt = t.substring(1).trim();
+          if (gt.length > 0 && gt.length <= 6 && gt.indexOf(' ') === -1) cur.icon = gt;
           continue;
         }
 
-        // - [label](url) desc
-        var isDash = (c0 === '-' && c1 === ' ');
-        var isStar = (c0 === '*' && c1 === ' ');
-
-        if (currentSec && (isDash || isStar)) {
-          var lb = trimmed.indexOf('[');
-          var rb = (lb !== -1) ? trimmed.indexOf(']', lb) : -1;
-          var hasParen = (rb !== -1 && rb + 1 < trimmed.length && trimmed.charAt(rb + 1) === '(');
-          var lp = hasParen ? trimmed.indexOf(')', rb + 1) : -1;
+        var isList = ((c0 === '-' && c1 === ' ') || (c0 === '*' && c1 === ' '));
+        if (cur && isList) {
+          var lb = t.indexOf('[');
+          var rb = (lb !== -1) ? t.indexOf(']', lb) : -1;
+          var ok = (rb !== -1 && rb + 1 < t.length && t.charAt(rb + 1) === '(');
+          var lp = ok ? t.indexOf(')', rb + 1) : -1;
 
           if (lb !== -1 && rb !== -1 && lp !== -1) {
-            var label = trimmed.substring(lb + 1, rb).trim();
-            var url   = trimmed.substring(rb + 2, lp).trim();
-
-            var icon = '';
-            if (lb > 2) icon = trimmed.substring(2, lb).trim();
-
-            var desc = '';
-            if (lp < trimmed.length - 1) {
-              desc = trimmed.substring(lp + 1).trim().replace(/^[-–—:：\s]+/, '');
+            var label = t.substring(lb + 1, rb).trim();
+            var url   = t.substring(rb + 2, lp).trim();
+            var icon  = (lb > 2) ? t.substring(2, lb).trim() : '';
+            var desc  = '';
+            if (lp < t.length - 1) {
+              desc = t.substring(lp + 1).trim().replace(/^[-–—:：\s]+/, '');
             }
 
             var item = { icon: icon, label: label, url: url, desc: desc };
-            currentSec.items.push(item);
-            allLinks.push({
-              icon: icon, label: label, url: url, desc: desc,
-              section: currentSec.title
-            });
+            cur.items.push(item);
+            allLinks.push({ icon: icon, label: label, url: url, desc: desc, section: cur.title });
           }
         }
       }
 
       linkCount.textContent = allLinks.length;
-      console.log('[Nav]', sections.length, 'sections,', allLinks.length, 'links');
       return sections;
     }
 
@@ -622,26 +541,22 @@
 
       var html = '';
       for (var i = 0; i < sections.length; i++) {
-        var sec = sections[i];
+        var s = sections[i];
         html += '<div class="nav-sec-btn" data-sec="' + i + '" onclick="scrollToSection(' + i + ')">';
-        html += '<span class="sec-icon">' + (sec.icon || '&#8226;') + '</span>';
-        html += '<span class="sec-label">' + esc(sec.title) + '</span>';
-        html += '<span class="sec-count">' + sec.items.length + '</span>';
+        html += '<span class="sec-icon">' + (s.icon || '&#8226;') + '</span>';
+        html += '<span class="sec-label">' + esc(s.title) + '</span>';
+        html += '<span class="sec-count">' + s.items.length + '</span>';
         html += '</div>';
       }
-
       sidebarNav.innerHTML = html;
     }
 
-    // ========== Render Main Content ==========
+    // ========== Render Main ==========
     function renderMainContent(sections) {
       if (!sections.length || !allLinks.length) {
         mainContent.innerHTML =
-          '<div class="empty-state">' +
-          '<div class="empty-icon">&#9888;</div>' +
-          '<p>README.md 中未找到链接</p>' +
-          '<p style="font-size:0.75rem;margin-top:8px;">格式: <code>- [名称](https://...) 描述</code></p>' +
-          '</div>';
+          '<div class="empty-state"><div class="empty-icon">&#9888;</div>' +
+          '<p>README.md 中未找到链接</p></div>';
         return;
       }
 
@@ -661,22 +576,12 @@
 
         for (var ii = 0; ii < sec.items.length; ii++) {
           var item = sec.items[ii];
-          var host = shortHost(item.url);
 
           html += '<a class="link-card" href="' + esc(item.url) + '" target="_blank" rel="noopener">';
-          html += cardIconHtml(item.url);
-
+          html += iconHtml(item.url);
           html += '<div class="card-body">';
-          html += '<div class="card-top">';
           html += '<span class="card-title">' + esc(item.label) + '</span>';
-          if (host) html += '<span class="card-url">' + esc(host) + '</span>';
-          html += '</div>';
-
-          // Description line (restored)
-          if (item.desc) {
-            html += '<div class="card-desc">' + esc(item.desc) + '</div>';
-          }
-
+          if (item.desc) html += '<span class="card-desc">' + esc(item.desc) + '</span>';
           html += '</div></a>';
         }
 
@@ -692,7 +597,7 @@
       }
     }
 
-    // ========== Scroll to section ==========
+    // ========== Scroll ==========
     function scrollToSection(si) {
       var target = document.getElementById('sec-' + si);
       if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -701,32 +606,23 @@
     }
 
     // ========== Scrollspy ==========
-    var scrollspyTimer = null;
+    var spTimer = null;
 
     mainContent.addEventListener('scroll', function() {
-      if (scrollspyTimer) clearTimeout(scrollspyTimer);
-      scrollspyTimer = setTimeout(doScrollspy, 60);
+      if (spTimer) clearTimeout(spTimer);
+      spTimer = setTimeout(doScrollspy, 60);
     });
 
     function doScrollspy() {
-      var scrollTop = mainContent.scrollTop;
-      var triggerY = scrollTop + 80;
-      var activeIdx = 0;
-
+      var y = mainContent.scrollTop + 80;
+      var ai = 0;
       for (var i = 0; i < secEls.length; i++) {
-        if (secEls[i].el.offsetTop <= triggerY) {
-          activeIdx = secEls[i].index;
-        }
+        if (secEls[i].el.offsetTop <= y) ai = secEls[i].index;
       }
-
       var btns = document.querySelectorAll('.nav-sec-btn');
       for (var j = 0; j < btns.length; j++) {
         var idx = parseInt(btns[j].getAttribute('data-sec'), 10);
-        if (idx === activeIdx) {
-          btns[j].classList.add('active');
-        } else {
-          btns[j].classList.remove('active');
-        }
+        btns[j].classList.toggle('active', idx === ai);
       }
     }
 
@@ -734,56 +630,46 @@
     searchInput.addEventListener('input', function(e) {
       var q = e.target.value.toLowerCase().trim();
       var btns = document.querySelectorAll('.nav-sec-btn');
-      var sections = document.querySelectorAll('.page-section');
+      var secs = document.querySelectorAll('.page-section');
       var i, j, k;
 
       if (!q) {
         for (i = 0; i < btns.length; i++) btns[i].style.display = '';
-        for (j = 0; j < sections.length; j++) {
-          sections[j].style.display = '';
-          var cards = sections[j].querySelectorAll('.link-card');
-          for (k = 0; k < cards.length; k++) cards[k].classList.remove('hidden');
+        for (j = 0; j < secs.length; j++) {
+          secs[j].style.display = '';
+          var cs = secs[j].querySelectorAll('.link-card');
+          for (k = 0; k < cs.length; k++) cs[k].classList.remove('hidden');
         }
         return;
       }
 
-      for (i = 0; i < sections.length; i++) {
-        var sec = sections[i];
-        var cards = sec.querySelectorAll('.link-card');
-        var hasVisible = false;
-
+      for (i = 0; i < secs.length; i++) {
+        var cards = secs[i].querySelectorAll('.link-card');
+        var vis = false;
         for (j = 0; j < cards.length; j++) {
-          var card = cards[j];
-          var title = card.querySelector('.card-title').textContent.toLowerCase();
-          var urlEl = card.querySelector('.card-url');
-          var descEl = card.querySelector('.card-desc');
-          var text = title;
-          if (urlEl) text += ' ' + urlEl.textContent.toLowerCase();
-          if (descEl) text += ' ' + descEl.textContent.toLowerCase();
-
-          if (text.indexOf(q) !== -1) {
-            card.classList.remove('hidden');
-            hasVisible = true;
-          } else {
-            card.classList.add('hidden');
-          }
+          var c = cards[j];
+          var txt = c.querySelector('.card-title').textContent.toLowerCase();
+          var de = c.querySelector('.card-desc');
+          if (de) txt += ' ' + de.textContent.toLowerCase();
+          var match = txt.indexOf(q) !== -1;
+          c.classList.toggle('hidden', !match);
+          if (match) vis = true;
         }
-
-        sec.style.display = hasVisible ? '' : 'none';
+        secs[i].style.display = vis ? '' : 'none';
       }
 
       for (k = 0; k < btns.length; k++) {
         var idx = parseInt(btns[k].getAttribute('data-sec'), 10);
-        var secEl = document.getElementById('sec-' + idx);
-        btns[k].style.display = (secEl && secEl.style.display !== 'none') ? '' : 'none';
+        var el = document.getElementById('sec-' + idx);
+        btns[k].style.display = (el && el.style.display !== 'none') ? '' : 'none';
       }
     });
 
     // ========== INIT ==========
     (function init() {
-      fetch(SIDEBAR_FILE).then(function(resp) {
-        if (!resp.ok) throw new Error('HTTP ' + resp.status);
-        return resp.text();
+      fetch(SIDEBAR_FILE).then(function(r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.text();
       }).then(function(md) {
         sidebarData = parseSidebarMarkdown(md);
         renderSidebar(sidebarData);
@@ -792,9 +678,8 @@
       }).catch(function(err) {
         console.error('[Nav]', err);
         sidebarNav.innerHTML =
-          '<div style="padding:20px;color:#c0392b;font-size:0.82rem;">' +
-          '加载失败: ' + err.message + '<br><br>' +
-          '<span style="color:var(--text-muted);">确保 README.md 存在于根目录</span></div>';
+          '<div style="padding:20px;color:#c0392b;font-size:0.82rem;">加载失败: ' + err.message +
+          '<br><br><span style="color:var(--text-muted);">确保 README.md 存在于根目录</span></div>';
         mainContent.innerHTML =
           '<div class="empty-state"><div class="empty-icon">&#9888;</div><p>加载失败</p></div>';
       });
