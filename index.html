@@ -1,19 +1,36 @@
-<script>
-  window.$docsify = {
-    name: '我的网址导航',
-    repo: '',
-    loadSidebar: true,
-    // 控制侧边栏自动提取的标题层级：设为0则不自动提取，设为2则显示二级及以下标题
-    subMaxLevel: 0, 
-    // 页面滚动时，侧边栏对应目录自动高亮
-    auto2top: true,
-    // 侧边栏是否可滚动（内容多的时候很有用）
-    sidebarScroll: true,
-    search: {
-      paths: 'auto',
-      placeholder: '搜索站点',
-      noData: '找不到结果'
-    },
-    themeColor: '#3F51B5'
-  }
-</script>
+<head>
+  <meta charset="UTF-8">
+  <title>我的网址导航</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/docsify/lib/themes/vue.css">
+  <!-- 折叠插件样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/docsify-sidebar-collapse/dist/sidebar.min.css">
+</head>
+<body>
+  <div id="app">加载中...</div>
+  <script src="https://unpkg.com/docsify/lib/docsify.min.js"></script>
+  <script src="https://unpkg.com/docsify/lib/plugins/search.min.js"></script>
+  <!-- 折叠插件脚本 -->
+  <script src="https://unpkg.com/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
+  <script>
+    window.$docsify = {
+      name: '我的网址导航',
+      repo: '',
+      loadSidebar: true,
+      subMaxLevel: 0,
+      auto2top: true,
+      sidebarScroll: true,
+      // 折叠插件配置：默认展开第1级分组
+      sidebarCollapse: {
+        defaultOpenLevel: 1 
+      },
+      search: {
+        paths: 'auto',
+        placeholder: '搜索站点',
+        noData: '找不到结果'
+      },
+      themeColor: '#3F51B5'
+    }
+  </script>
+</body>
+</html>
