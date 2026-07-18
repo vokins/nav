@@ -144,7 +144,7 @@
     }
 
     .breadcrumb span { color: var(--text-secondary); }
-    .breadcrumb .sep { color: var(--text-muted); font-size: 12px; }
+    .breadcrumb .sep { color: var(--text-muted); }
 
     .menu-toggle {
       display: none; background: none; border: 1px solid var(--border);
@@ -186,15 +186,15 @@
       border-bottom: 1px dashed var(--border);
     }
 
-    /* ===== Link Grid ===== */
+    /* ===== Link Grid: 等宽列由 JS 控制 ===== */
     .link-grid {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
       gap: 6px;
+      /* grid-template-columns 由 JS 设置 */
     }
 
     .link-card {
-      display: inline-flex;
+      display: flex;
       align-items: center;
       gap: 8px;
       padding: 8px 12px;
@@ -204,8 +204,7 @@
       text-decoration: none; color: var(--text-primary);
       transition: border-color 0.15s, background 0.15s;
       cursor: pointer;
-      width: fit-content;
-      max-width: 100%;
+      min-width: 0;
     }
 
     .link-card:hover {
@@ -232,7 +231,7 @@
       text-transform: uppercase;
     }
 
-    /* Card body: 标题和注释上下分行 */
+    /* 标题和注释上下两行 */
     .link-card .card-body {
       display: flex;
       flex-direction: column;
@@ -381,7 +380,43 @@
         '</div>';
     }
 
-    // ========== PARSER ==========
+    // ========================================================
+    //  等宽计算：每个 .link-grid 内所有卡片统一为最宽卡片的宽度
+    // ========================================================
+    function equalizeGrids() {
+      var grids = document.querySelectorAll('.link-grid');
+      for (var i = 0; i < grids.length; i++) {
+        var grid = grids[i];
+        var cards = grid.querySelectorAll('.link-card:not(.hidden)');
+        if (!cards.length) continue;
+
+        // 1. 先把所有卡片设为 fit-content 以测量自然宽度
+        for (var j = 0; j < cards.length; j++) {
+          cards[j].style.width = 'fit-content';
+          cards[j].style.minWidth = '0';
+        }
+
+        // 2. 找到最宽的
+        var maxW = 0;
+        for (var k = 0; k < cards.length; k++) {
+          var w = cards[k].offsetWidth;
+          if (w > maxW) maxW = w;
+        }
+
+        // 3. 加一点 padding 余量
+        maxW += 4;
+
+        // 4. 用 CSS Grid 的 repeat(auto-fill, maxW) 实现等宽 + 自动换行
+        grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(' + maxW + 'px, 1fr))';
+
+        // 5. 卡片宽度由 grid 控制，去掉手动宽度
+        for (var m = 0; m < cards.length; m++) {
+          cards[m].style.width = '';
+        }
+      }
+    }
+
+    // PARSER
     function parseSidebarMarkdown(md) {
       if (md.charCodeAt(0) === 0xFEFF) md = md.substring(1);
       var lines = md.split('\n');
@@ -448,7 +483,7 @@
       return sections;
     }
 
-    // ========== Sidebar ==========
+    // Sidebar
     function renderSidebar(sections) {
       if (!sections.length) {
         sidebarNav.innerHTML = '<div style="padding:16px;color:var(--text-muted);font-size:12px;">未找到分类</div>';
@@ -468,7 +503,7 @@
       sidebarNav.innerHTML = html;
     }
 
-    // ========== Main Content ==========
+    // Main Content
     function renderMainContent(sections) {
       if (!sections.length || !allLinks.length) {
         mainContent.innerHTML = '<div class="empty-state"><div class="empty-icon">&#9888;</div><p>README.md 中未找到链接</p></div>';
@@ -519,6 +554,9 @@
         var el = document.getElementById('sec-' + j);
         if (el) secEls.push({ index: j, el: el });
       }
+
+      // 等宽计算
+      equalizeGrids();
     }
 
     function scrollToSection(si) {
@@ -564,6 +602,7 @@
           var sgs = secs[j].querySelectorAll('.sub-group');
           for (k = 0; k < sgs.length; k++) sgs[k].style.display = '';
         }
+        equalizeGrids();
         return;
       }
 
@@ -593,6 +632,15 @@
         var el = document.getElementById('sec-' + idx);
         btns[k].style.display = (el && el.style.display !== 'none') ? '' : 'none';
       }
+
+      equalizeGrids();
+    });
+
+    // 窗口大小变化时重新计算
+    var resizeTimer = null;
+    window.addEventListener('resize', function() {
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(equalizeGrids, 200);
     });
 
     // INIT
