@@ -77,7 +77,7 @@
       width: 100%; padding: 6px 10px;
       background: var(--bg); border: 1px solid var(--border);
       border-radius: var(--radius); color: var(--text-primary);
-      font-family: var(--font-mono); font-size: 0.75rem;
+      font-family: var(--font-mono); font-size: 12px;
       outline: none; transition: border-color 0.2s, box-shadow 0.2s;
     }
 
@@ -92,7 +92,7 @@
     .nav-sec-btn {
       display: flex; align-items: center; gap: 8px;
       padding: 7px 18px; color: var(--text-secondary);
-      font-size: 0.78rem; font-weight: 500; cursor: pointer;
+      font-size: 13px; font-weight: 500; cursor: pointer;
       transition: all 0.15s ease; position: relative; user-select: none;
     }
 
@@ -108,7 +108,7 @@
     .nav-sec-btn.active::before { height: 50%; }
 
     .nav-sec-btn .sec-icon {
-      font-size: 0.85rem; width: 18px;
+      font-size: 13px; width: 18px;
       text-align: center; flex-shrink: 0; line-height: 1;
     }
 
@@ -117,14 +117,14 @@
     }
 
     .nav-sec-btn .sec-count {
-      font-size: 0.6rem; color: var(--text-muted);
+      font-size: 12px; color: var(--text-muted);
       background: var(--surface-raised); border: 1px solid var(--border);
       border-radius: 8px; padding: 0 6px; flex-shrink: 0;
     }
 
     .sidebar-footer {
       padding: 10px 18px; border-top: 1px solid var(--border);
-      font-size: 0.62rem; color: var(--text-muted);
+      font-size: 12px; color: var(--text-muted);
       text-align: center; flex-shrink: 0;
     }
 
@@ -140,16 +140,16 @@
 
     .breadcrumb {
       display: flex; align-items: center; gap: 6px;
-      font-size: 0.75rem; color: var(--text-muted);
+      font-size: 12px; color: var(--text-muted);
     }
 
     .breadcrumb span { color: var(--text-secondary); }
-    .breadcrumb .sep { color: var(--text-muted); font-size: 0.65rem; }
+    .breadcrumb .sep { color: var(--text-muted); font-size: 12px; }
 
     .menu-toggle {
       display: none; background: none; border: 1px solid var(--border);
       border-radius: var(--radius); color: var(--text-secondary);
-      padding: 5px 9px; font-size: 0.9rem; cursor: pointer;
+      padding: 5px 9px; font-size: 14px; cursor: pointer;
     }
 
     .menu-toggle:hover { border-color: var(--accent-dim); color: var(--accent); }
@@ -170,7 +170,7 @@
       display: flex; align-items: center; gap: 8px;
     }
 
-    .page-section-title .sec-icon { font-size: 1rem; }
+    .page-section-title .sec-icon { font-size: 14px; }
 
     /* ===== Sub-group ===== */
     .sub-group {
@@ -180,24 +180,24 @@
     .sub-group:first-child { margin-top: 0; }
 
     .sub-group-title {
-      font-size: 0.72rem; font-weight: 500;
+      font-size: 12px; font-weight: 500;
       color: var(--text-muted); letter-spacing: 0.04em;
       padding-bottom: 4px; margin-bottom: 6px;
       border-bottom: 1px dashed var(--border);
     }
 
-    /* ===== Link List (flex-wrap, 自适应宽度) ===== */
+    /* ===== Link Grid ===== */
     .link-grid {
       display: flex;
       flex-wrap: wrap;
-      gap: 4px;
+      gap: 6px;
     }
 
     .link-card {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 5px 8px;
+      gap: 8px;
+      padding: 8px 12px;
       background: var(--bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -215,36 +215,40 @@
     .link-card.hidden { display: none; }
 
     .link-card .card-icon {
-      width: 13px; height: 13px; flex-shrink: 0;
+      width: 16px; height: 16px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
     }
 
     .link-card .card-icon img {
-      width: 13px; height: 13px; border-radius: 2px;
+      width: 16px; height: 16px; border-radius: 2px;
       object-fit: contain; display: block;
     }
 
     .link-card .card-icon .fb {
-      width: 13px; height: 13px; border-radius: 2px;
+      width: 16px; height: 16px; border-radius: 2px;
       background: var(--surface-raised); border: 1px solid var(--border);
       display: flex; align-items: center; justify-content: center;
-      font-size: 0.45rem; font-weight: 600; color: var(--text-muted);
+      font-size: 10px; font-weight: 600; color: var(--text-muted);
       text-transform: uppercase;
     }
 
+    /* Card body: 标题和注释上下分行 */
     .link-card .card-body {
-      display: flex; align-items: center; gap: 6px;
+      display: flex;
+      flex-direction: column;
       min-width: 0;
+      line-height: 1.3;
     }
 
     .link-card .card-title {
-      font-size: 0.75rem; font-weight: 500;
-      white-space: nowrap;
+      font-size: 12px; font-weight: 500;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
 
     .link-card .card-desc {
-      font-size: 0.62rem; color: var(--text-muted);
-      white-space: nowrap;
+      font-size: 12px; color: var(--text-muted);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      margin-top: 1px;
     }
 
     /* Loading & Empty */
@@ -264,7 +268,7 @@
     }
 
     .empty-state .empty-icon { font-size: 2.5rem; margin-bottom: 12px; opacity: 0.25; }
-    .empty-state p { font-size: 0.8rem; }
+    .empty-state p { font-size: 13px; }
 
     .overlay {
       display: none; position: fixed; inset: 0;
@@ -294,7 +298,7 @@
         <input type="text" id="searchInput" placeholder="搜索..." autocomplete="off">
       </div>
       <nav class="sidebar-nav" id="sidebarNav">
-        <div style="padding:16px;color:var(--text-muted);font-size:0.78rem;">
+        <div style="padding:16px;color:var(--text-muted);font-size:12px;">
           <span class="loading-spinner"></span> 加载中...
         </div>
       </nav>
@@ -307,7 +311,7 @@
       <header class="main-header">
         <button class="menu-toggle" id="menuToggle">&#9776;</button>
         <div class="breadcrumb" id="breadcrumb"><span>全部链接</span></div>
-        <div style="font-size:0.68rem;color:var(--text-muted);">
+        <div style="font-size:12px;color:var(--text-muted);">
           <span id="linkCount">0</span> 个链接
         </div>
       </header>
@@ -372,7 +376,7 @@
       return '<div class="card-icon">' +
         '<img src="' + esc(fav) + '" alt="" loading="lazy"' +
         ' onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"' +
-        ' width="13" height="13">' +
+        ' width="16" height="16">' +
         '<span class="fb" style="display:none">' + ch + '</span>' +
         '</div>';
     }
@@ -447,7 +451,7 @@
     // ========== Sidebar ==========
     function renderSidebar(sections) {
       if (!sections.length) {
-        sidebarNav.innerHTML = '<div style="padding:16px;color:var(--text-muted);font-size:0.78rem;">未找到分类</div>';
+        sidebarNav.innerHTML = '<div style="padding:16px;color:var(--text-muted);font-size:12px;">未找到分类</div>';
         return;
       }
       var html = '';
@@ -603,7 +607,7 @@
         setTimeout(doScrollspy, 100);
       }).catch(function(err) {
         sidebarNav.innerHTML =
-          '<div style="padding:16px;color:#c0392b;font-size:0.78rem;">加载失败: ' + err.message +
+          '<div style="padding:16px;color:#c0392b;font-size:12px;">加载失败: ' + err.message +
           '<br><span style="color:var(--text-muted);">确保 README.md 存在于根目录</span></div>';
         mainContent.innerHTML =
           '<div class="empty-state"><div class="empty-icon">&#9888;</div><p>加载失败</p></div>';
