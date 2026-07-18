@@ -26,17 +26,17 @@
 
 ## 数据库
 > 🗄
-- 🐘 [PostgreSQL](https://www.postgresql.org/) 强大的关系型数据库
-- 🍃 [MongoDB](https://www.mongodb.com/) 文档型数据库
-- 🔴 [Redis](https://redis.io/) 内存数据库
-- 🪶 [SQLite](https://www.sqlite.org/) 轻量嵌入式数据库
+- [PostgreSQL](https://www.postgresql.org/) 强大的关系型数据库
+- [MongoDB](https://www.mongodb.com/) 文档型数据库
+- [Redis](https://redis.io/) 内存数据库
+- [SQLite](https://www.sqlite.org/) 轻量嵌入式数据库
 
 ## 设计资源
 > 🎨
-- 🎨 [Figma](https://www.figma.com/) 协作设计工具
-- 🎨 [Dribbble](https://dribbble.com/) 设计灵感社区
-- 🖼 [Unsplash](https://unsplash.com/) 免费高质量图片
-- ✏️ [Excalidraw](https://excalidraw.com/) 手绘风格白板
+- [Figma](https://www.figma.com/) 协作设计工具
+- [Dribbble](https://dribbble.com/) 设计灵感社区
+- [Unsplash](https://unsplash.com/) 免费高质量图片
+- [Excalidraw](https://excalidraw.com/) 手绘风格白板
 
 ## AI 工具
 > 🤖
