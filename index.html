@@ -150,6 +150,14 @@
 
     .nav-sec-btn.active::before { height: 50%; }
 
+    .nav-sec-btn .sec-icon {
+      font-size: 0.95rem;
+      width: 20px;
+      text-align: center;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
     .nav-sec-btn .sec-label {
       flex: 1;
       white-space: nowrap;
@@ -244,20 +252,27 @@
       padding-bottom: 10px;
       margin-bottom: 18px;
       border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .page-section-title .sec-icon {
+      font-size: 1.2rem;
     }
 
     /* ===== Link Grid ===== */
     .link-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 10px;
     }
 
     .link-card {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 10px;
-      padding: 11px 14px;
+      padding: 12px 14px;
       background: var(--bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -276,43 +291,47 @@
 
     .link-card.hidden { display: none; }
 
-    /* Favicon icon — small, subtle */
+    /* Favicon icon */
     .link-card .card-icon {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: center;
+      margin-top: 2px;
     }
 
     .link-card .card-icon img {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       border-radius: 3px;
       object-fit: contain;
       display: block;
     }
 
-    /* Fallback letter icon */
     .link-card .card-icon .fallback-letter {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       border-radius: 3px;
       background: var(--surface-raised);
       border: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       font-weight: 600;
       color: var(--text-muted);
       text-transform: uppercase;
     }
 
+    /* Card body: two rows */
     .link-card .card-body {
       flex: 1;
       min-width: 0;
+    }
+
+    .link-card .card-top {
       display: flex;
       align-items: center;
       gap: 8px;
@@ -324,28 +343,30 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      flex-shrink: 1;
     }
 
     .link-card .card-url {
-      font-size: 0.68rem;
-      color: var(--text-muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      flex-shrink: 2;
-    }
-
-    .link-card .card-desc-tag {
       font-size: 0.66rem;
       color: var(--text-muted);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 120px;
-      flex-shrink: 3;
+      flex-shrink: 2;
+      min-width: 0;
     }
 
-    /* Loading */
+    .link-card .card-desc {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 2px;
+      padding-left: 0;
+    }
+
+    /* Loading & Empty */
     .loading-spinner {
       display: inline-block;
       width: 18px;
@@ -420,9 +441,7 @@
           <span class="loading-spinner"></span> 加载中...
         </div>
       </nav>
-      <div class="sidebar-footer">
-        数据来源: README.md
-      </div>
+      <div class="sidebar-footer">数据来源: README.md</div>
     </aside>
 
     <div class="overlay" id="overlay"></div>
@@ -459,7 +478,6 @@
     var sidebar     = document.getElementById('sidebar');
     var overlay     = document.getElementById('overlay');
 
-    // Mobile
     menuToggle.addEventListener('click', function() {
       sidebar.classList.toggle('open');
       overlay.classList.toggle('active');
@@ -469,23 +487,16 @@
       overlay.classList.remove('active');
     });
 
-    // ========== Esc ==========
     function esc(s) {
       var d = document.createElement('div');
       d.textContent = s;
       return d.innerHTML;
     }
 
-    // ========================================================
-    //  Favicon: extract host, build favicon URL
-    //  Uses Google S2 favicon service as primary,
-    //  falls back to showing first letter of domain
-    // ========================================================
+    // ========== Favicon ==========
     function getHost(url) {
-      try {
-        return new URL(url).hostname;
-      } catch(e) {
-        // Try manual parse
+      try { return new URL(url).hostname; }
+      catch(e) {
         var m = url.match(/^https?:\/\/([^\/]+)/);
         return m ? m[1] : '';
       }
@@ -493,44 +504,33 @@
 
     function faviconUrl(url) {
       var host = getHost(url);
-      if (!host) return '';
-      return 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(host) + '&sz=32';
+      return host ? 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(host) + '&sz=32' : '';
     }
 
     function firstLetter(url) {
-      var host = getHost(url);
-      if (!host) return '?';
-      // Strip www.
-      var name = host.replace(/^www\./, '');
-      return name.charAt(0).toUpperCase();
+      var host = getHost(url).replace(/^www\./, '');
+      return host ? host.charAt(0).toUpperCase() : '?';
     }
 
     function shortHost(url) {
-      var host = getHost(url);
-      if (!host) return '';
-      return host.replace(/^www\./, '');
+      return getHost(url).replace(/^www\./, '');
     }
 
-    // Build card icon HTML: favicon img with onerror fallback
     function cardIconHtml(url) {
       var fav = faviconUrl(url);
       var letter = firstLetter(url);
-
       if (!fav) {
         return '<div class="card-icon"><span class="fallback-letter">' + letter + '</span></div>';
       }
-
       return '<div class="card-icon">' +
         '<img src="' + esc(fav) + '" alt="" loading="lazy"' +
         ' onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"' +
-        ' width="20" height="20">' +
+        ' width="18" height="18">' +
         '<span class="fallback-letter" style="display:none">' + letter + '</span>' +
         '</div>';
     }
 
-    // ========================================================
-    //  PARSER
-    // ========================================================
+    // ========== PARSER ==========
     function parseSidebarMarkdown(md) {
       if (md.charCodeAt(0) === 0xFEFF) md = md.substring(1);
 
@@ -613,9 +613,7 @@
       return sections;
     }
 
-    // ========================================================
-    //  Render Sidebar
-    // ========================================================
+    // ========== Render Sidebar ==========
     function renderSidebar(sections) {
       if (!sections.length) {
         sidebarNav.innerHTML = '<div style="padding:20px;color:var(--text-muted);font-size:0.82rem;">未找到分类</div>';
@@ -626,6 +624,7 @@
       for (var i = 0; i < sections.length; i++) {
         var sec = sections[i];
         html += '<div class="nav-sec-btn" data-sec="' + i + '" onclick="scrollToSection(' + i + ')">';
+        html += '<span class="sec-icon">' + (sec.icon || '&#8226;') + '</span>';
         html += '<span class="sec-label">' + esc(sec.title) + '</span>';
         html += '<span class="sec-count">' + sec.items.length + '</span>';
         html += '</div>';
@@ -634,9 +633,7 @@
       sidebarNav.innerHTML = html;
     }
 
-    // ========================================================
-    //  Render Main Content — all links with favicon
-    // ========================================================
+    // ========== Render Main Content ==========
     function renderMainContent(sections) {
       if (!sections.length || !allLinks.length) {
         mainContent.innerHTML =
@@ -656,7 +653,10 @@
         if (!sec.items.length) continue;
 
         html += '<div class="page-section" id="sec-' + si + '">';
-        html += '<div class="page-section-title">' + esc(sec.title) + '</div>';
+        html += '<div class="page-section-title">';
+        html += '<span class="sec-icon">' + (sec.icon || '') + '</span>';
+        html += '<span>' + esc(sec.title) + '</span>';
+        html += '</div>';
         html += '<div class="link-grid">';
 
         for (var ii = 0; ii < sec.items.length; ii++) {
@@ -664,19 +664,20 @@
           var host = shortHost(item.url);
 
           html += '<a class="link-card" href="' + esc(item.url) + '" target="_blank" rel="noopener">';
-
-          // Icon: auto favicon
           html += cardIconHtml(item.url);
 
-          // Body
           html += '<div class="card-body">';
+          html += '<div class="card-top">';
           html += '<span class="card-title">' + esc(item.label) + '</span>';
-          if (host) {
-            html += '<span class="card-url">' + esc(host) + '</span>';
-          }
+          if (host) html += '<span class="card-url">' + esc(host) + '</span>';
           html += '</div>';
 
-          html += '</a>';
+          // Description line (restored)
+          if (item.desc) {
+            html += '<div class="card-desc">' + esc(item.desc) + '</div>';
+          }
+
+          html += '</div></a>';
         }
 
         html += '</div></div>';
@@ -684,7 +685,6 @@
 
       mainContent.innerHTML = html;
 
-      // Cache section elements
       secEls = [];
       for (var j = 0; j < sections.length; j++) {
         var el = document.getElementById('sec-' + j);
@@ -692,9 +692,7 @@
       }
     }
 
-    // ========================================================
-    //  Scroll to section
-    // ========================================================
+    // ========== Scroll to section ==========
     function scrollToSection(si) {
       var target = document.getElementById('sec-' + si);
       if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -702,9 +700,7 @@
       overlay.classList.remove('active');
     }
 
-    // ========================================================
-    //  Scrollspy
-    // ========================================================
+    // ========== Scrollspy ==========
     var scrollspyTimer = null;
 
     mainContent.addEventListener('scroll', function() {
@@ -734,9 +730,7 @@
       }
     }
 
-    // ========================================================
-    //  Search
-    // ========================================================
+    // ========== Search ==========
     searchInput.addEventListener('input', function(e) {
       var q = e.target.value.toLowerCase().trim();
       var btns = document.querySelectorAll('.nav-sec-btn');
@@ -762,9 +756,12 @@
           var card = cards[j];
           var title = card.querySelector('.card-title').textContent.toLowerCase();
           var urlEl = card.querySelector('.card-url');
-          var urlText = urlEl ? urlEl.textContent.toLowerCase() : '';
+          var descEl = card.querySelector('.card-desc');
+          var text = title;
+          if (urlEl) text += ' ' + urlEl.textContent.toLowerCase();
+          if (descEl) text += ' ' + descEl.textContent.toLowerCase();
 
-          if (title.indexOf(q) !== -1 || urlText.indexOf(q) !== -1) {
+          if (text.indexOf(q) !== -1) {
             card.classList.remove('hidden');
             hasVisible = true;
           } else {
@@ -782,9 +779,7 @@
       }
     });
 
-    // ========================================================
-    //  INIT
-    // ========================================================
+    // ========== INIT ==========
     (function init() {
       fetch(SIDEBAR_FILE).then(function(resp) {
         if (!resp.ok) throw new Error('HTTP ' + resp.status);
